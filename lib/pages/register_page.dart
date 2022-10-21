@@ -17,6 +17,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _repPassword = TextEditingController();
+
+  String _data = '';
   
   @override
   Widget build(BuildContext context) {
@@ -89,6 +91,21 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 keyboardType: TextInputType.text,
                 obscureText: true,
+              ),
+              ElevatedButton(
+                style: TextButton.styleFrom(
+                  textStyle: const TextStyle(fontSize: 16),
+                ),
+                onPressed: () {
+
+                },
+                child: const Text('Registrar'),
+              ),
+              Text(
+                _data,
+                style: const TextStyle(
+                  fontSize: 12, fontStyle: FontStyle.italic
+                ),
               )
             ],
           ),
