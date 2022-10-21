@@ -16,6 +16,12 @@ class _RegisterPageState extends State<RegisterPage> {
   final _repPassword = TextEditingController();
 
   String _data = 'Información :';
+
+  void _onRegisterButtonClicked() {
+    setState(() {
+      _data = 'Nombre: ${_name.text} \nCorreo Electrónico: ${_email.text}';
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -98,7 +104,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     textStyle: const TextStyle(fontSize: 16),
                   ),
                   onPressed: () {
-          
+                    _onRegisterButtonClicked();
                   },
                   child: const Text('Registrar'),
                 ),
