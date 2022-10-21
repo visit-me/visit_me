@@ -1,7 +1,4 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -92,6 +89,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   keyboardType: TextInputType.text,
                   obscureText: true,
+                ),
+                const SizedBox(
+                  height: 16.0,
                 ),
                 ElevatedButton(
                   style: TextButton.styleFrom(
