@@ -26,88 +26,90 @@ class _RegisterPageState extends State<RegisterPage> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Image(image: AssetImage('assets/images/logo.png')),
-              const SizedBox(
-                height: 16.0,
-              ),
-              TextFormField(
-                controller: _name,
-                decoration: const InputDecoration(
-                    //border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
-                    labelText: 'Nombre',
-                    icon: Padding(
-                      padding: EdgeInsets.only(),
-                      child: Icon(Icons.person),
-                    )
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Image(image: AssetImage('assets/images/logo.png')),
+                const SizedBox(
+                  height: 16.0,
                 ),
-                keyboardType: TextInputType.text,
-              ),
-              const SizedBox(
-                height: 16.0,
-              ),
-              TextFormField(
-                controller: _email,
-                decoration: const InputDecoration(
-                  //border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
-                    labelText: 'Correo Electrónico',
-                    icon: Padding(
-                      padding: EdgeInsets.only(),
-                      child: Icon(Icons.email),
-                    )
-                ),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(
-                height: 16.0,
-              ),
-              TextFormField(
-                controller: _password,
-                decoration: const InputDecoration(
-                  //border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
-                  labelText: 'Contraseña',
-                  icon: Padding(
-                    padding: EdgeInsets.only(),
-                    child: Icon(Icons.lock),
+                TextFormField(
+                  controller: _name,
+                  decoration: const InputDecoration(
+                      //border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
+                      labelText: 'Nombre',
+                      icon: Padding(
+                        padding: EdgeInsets.only(),
+                        child: Icon(Icons.person),
+                      )
                   ),
+                  keyboardType: TextInputType.text,
                 ),
-                keyboardType: TextInputType.text,
-                obscureText: true,
-              ),
-              const SizedBox(
-                height: 16.0,
-              ),
-              TextFormField(
-                controller: _repPassword,
-                decoration: const InputDecoration(
-                  //border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
-                    labelText: 'Repetir Contraseña',
-                  icon: Padding(
-                    padding: EdgeInsets.only(),
-                    child: Icon(Icons.lock),
-                  )
+                const SizedBox(
+                  height: 16.0,
                 ),
-                keyboardType: TextInputType.text,
-                obscureText: true,
-              ),
-              ElevatedButton(
-                style: TextButton.styleFrom(
-                  textStyle: const TextStyle(fontSize: 16),
+                TextFormField(
+                  controller: _email,
+                  decoration: const InputDecoration(
+                    //border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
+                      labelText: 'Correo Electrónico',
+                      icon: Padding(
+                        padding: EdgeInsets.only(),
+                        child: Icon(Icons.email),
+                      )
+                  ),
+                  keyboardType: TextInputType.emailAddress,
                 ),
-                onPressed: () {
-
-                },
-                child: const Text('Registrar'),
-              ),
-              Text(
-                _data,
-                style: const TextStyle(
-                  fontSize: 12, fontStyle: FontStyle.italic
+                const SizedBox(
+                  height: 16.0,
                 ),
-              )
-            ],
+                TextFormField(
+                  controller: _password,
+                  decoration: const InputDecoration(
+                    //border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
+                    labelText: 'Contraseña',
+                    icon: Padding(
+                      padding: EdgeInsets.only(),
+                      child: Icon(Icons.lock),
+                    ),
+                  ),
+                  keyboardType: TextInputType.text,
+                  obscureText: true,
+                ),
+                const SizedBox(
+                  height: 16.0,
+                ),
+                TextFormField(
+                  controller: _repPassword,
+                  decoration: const InputDecoration(
+                    //border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
+                      labelText: 'Repetir Contraseña',
+                    icon: Padding(
+                      padding: EdgeInsets.only(),
+                      child: Icon(Icons.lock),
+                    )
+                  ),
+                  keyboardType: TextInputType.text,
+                  obscureText: true,
+                ),
+                ElevatedButton(
+                  style: TextButton.styleFrom(
+                    textStyle: const TextStyle(fontSize: 16),
+                  ),
+                  onPressed: () {
+          
+                  },
+                  child: const Text('Registrar'),
+                ),
+                Text(
+                  _data,
+                  style: const TextStyle(
+                    fontSize: 12, fontStyle: FontStyle.italic
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
