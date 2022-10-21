@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -15,7 +17,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _repPassword = TextEditingController();
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +33,13 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               TextFormField(
                 controller: _name,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)), labelText: 'Nombre'
+                decoration: const InputDecoration(
+                    //border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
+                    labelText: 'Nombre',
+                    icon: Padding(
+                      padding: EdgeInsets.only(),
+                      child: Icon(Icons.person),
+                    )
                 ),
                 keyboardType: TextInputType.text,
               ),
@@ -41,8 +48,13 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               TextFormField(
                 controller: _email,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)), labelText: 'Correo Electrónico'
+                decoration: const InputDecoration(
+                  //border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
+                    labelText: 'Correo Electrónico',
+                    icon: Padding(
+                      padding: EdgeInsets.only(),
+                      child: Icon(Icons.email),
+                    )
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
@@ -51,8 +63,13 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               TextFormField(
                 controller: _password,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)), labelText: 'Contraseña'
+                decoration: const InputDecoration(
+                  //border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
+                  labelText: 'Contraseña',
+                  icon: Padding(
+                    padding: EdgeInsets.only(),
+                    child: Icon(Icons.lock),
+                  ),
                 ),
                 keyboardType: TextInputType.text,
                 obscureText: true,
@@ -62,8 +79,13 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               TextFormField(
                 controller: _repPassword,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)), labelText: 'Repetir Contraseña'
+                decoration: const InputDecoration(
+                  //border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
+                    labelText: 'Repetir Contraseña',
+                  icon: Padding(
+                    padding: EdgeInsets.only(),
+                    child: Icon(Icons.lock),
+                  )
                 ),
                 keyboardType: TextInputType.text,
                 obscureText: true,
