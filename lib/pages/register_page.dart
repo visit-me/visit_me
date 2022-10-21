@@ -55,6 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)), labelText: 'Contraseña'
                 ),
                 keyboardType: TextInputType.text,
+                obscureText: true,
               ),
               const SizedBox(
                 height: 16.0,
@@ -65,6 +66,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)), labelText: 'Repetir Contraseña'
                 ),
                 keyboardType: TextInputType.text,
+                obscureText: true,
               )
             ],
           ),
