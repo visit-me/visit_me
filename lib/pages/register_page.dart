@@ -18,7 +18,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _password = TextEditingController();
   final _repPassword = TextEditingController();
 
-  String _data = '';
+  String _data = 'Información :';
   
   @override
   Widget build(BuildContext context) {
