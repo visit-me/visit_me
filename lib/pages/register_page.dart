@@ -19,7 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _onRegisterButtonClicked() {
     setState(() {
-      _data = 'Nombre: ${_name.text} \nCorreo Electrónico: ${_email.text}';
+      _data = 'Nombre: ${_name.text} \nCorreo electrónico: ${_email.text}';
     });
   }
   
@@ -56,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: _email,
                   decoration: const InputDecoration(
                     //border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)),
-                      labelText: 'Correo Electrónico',
+                      labelText: 'Correo electrónico',
                       icon: Padding(
                         padding: EdgeInsets.only(),
                         child: Icon(Icons.email),
