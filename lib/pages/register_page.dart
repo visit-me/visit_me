@@ -31,8 +31,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               TextFormField(
                 controller: _name,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Nombre'
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)), labelText: 'Nombre'
                 ),
                 keyboardType: TextInputType.text,
               ),
@@ -41,8 +41,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               TextFormField(
                 controller: _email,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Correo Electrónico'
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)), labelText: 'Correo Electrónico'
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
@@ -51,8 +51,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               TextFormField(
                 controller: _password,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Contraseña'
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)), labelText: 'Contraseña'
                 ),
                 keyboardType: TextInputType.text,
               ),
@@ -61,8 +61,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               TextFormField(
                 controller: _repPassword,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Repetir Contraseña'
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(32)), labelText: 'Repetir Contraseña'
                 ),
                 keyboardType: TextInputType.text,
               )
