@@ -3,8 +3,22 @@ class User {
   var _email;
   var _password;
 
+  //Constructor
   User(this._name, this._email, this._password);
 
+  //Transformar a JSON
+  User.fromJson(Map<String, dynamic> json)
+  : _name = json['name'],
+    _email = json['email'],
+    _password = json['password'];
+
+  Map<String, dynamic> ToJson() => {
+    'name' : _name,
+    'email' : _email,
+    'password' : _password
+  };
+  
+  //Getters &Setters
   get name => _name;
 
   set name(value) {
