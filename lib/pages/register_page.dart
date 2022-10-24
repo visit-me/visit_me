@@ -42,7 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
         //_data = 'Nombre: ${_name.text} \nCorreo electrónico: ${_email.text}';
         var user = User(_name, _email, _password);
         saveUser(user);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
       } else {
         _showMessage('Las contaseñas deben ser iguales');
       }

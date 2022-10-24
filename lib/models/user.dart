@@ -6,6 +6,9 @@ class User {
   //Constructor
   User(this._name, this._email, this._password);
 
+  //Constructor vacío
+  User.Empty();
+
   //Transformar a JSON
   User.fromJson(Map<String, dynamic> json)
   : _name = json['name'],

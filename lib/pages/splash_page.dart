@@ -18,7 +18,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
   }
 
-  //Función para hacer que el Splash dure solo 2 segundo y pase a la login page
+  //Función para hacer que el Splash dure 6 segundos y pase a la login page
   Future<void> _closeSplash() async {
     Future.delayed(const Duration(seconds: 6), () async {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
