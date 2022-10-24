@@ -20,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
 
   //Función para hacer que el Splash dure solo 2 segundo y pase a la login page
   Future<void> _closeSplash() async {
-    Future.delayed(const Duration(seconds: 2), () async {
+    Future.delayed(const Duration(seconds: 6), () async {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
     });
   }
@@ -29,7 +29,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Image(image: AssetImage('assets/images/logo.png'),
+        child: Image(image: AssetImage('assets/images/entry.gif'),
         ),
       ),
     );
