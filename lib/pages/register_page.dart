@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import '../models/user.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
@@ -16,9 +18,25 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String _data = 'Información :';
 
+  void _showMessage(String message) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(content: Text(message),
+      action: SnackBarAction(
+        label: 'Aceptar', onPressed: scaffold.hideCurrentSnackBar
+      ),)
+    );
+  }
+
   void _onRegisterButtonClicked() {
     setState(() {
-      _data = 'Nombre: ${_name.text} \nCorreo electrónico: ${_email.text}';
+      if (_password.text == _repPassword.text) {
+        //_data = 'Nombre: ${_name.text} \nCorreo electrónico: ${_email.text}';
+        var user = User(_name, _email, _password);
+      } else {
+        _showMessage('Las contaseñas deben ser iguales');
+      }
+      
     });
   }
   
@@ -107,12 +125,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   },
                   child: const Text('Registrar'),
                 ),
-                Text(
-                  _data,
-                  style: const TextStyle(
-                    fontSize: 12, fontStyle: FontStyle.italic
-                  ),
-                )
               ],
             ),
           ),
