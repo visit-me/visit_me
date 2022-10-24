@@ -15,7 +15,7 @@ class User {
     _email = json['email'],
     _password = json['password'];
 
-  Map<String, dynamic> ToJson() => {
+  Map<String, dynamic> toJson() => {
     'name' : _name,
     'email' : _email,
     'password' : _password
