@@ -36,8 +36,9 @@ class _RegisterPageState extends State<RegisterPage> {
 
   //Función para guardar el usuario
   void saveUser(User user) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('user', jsonEncode(user));
+    //SharedPreferences prefs = await SharedPreferences.getInstance();
+    //prefs.setString('user', jsonEncode(user));
+    var result = await _firebaseApi.registerUser(user.email, user.password);
   }
 
   void _onRegisterButtonClicked() {
