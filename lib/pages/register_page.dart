@@ -39,13 +39,28 @@ class _RegisterPageState extends State<RegisterPage> {
     //SharedPreferences prefs = await SharedPreferences.getInstance();
     //prefs.setString('user', jsonEncode(user));
     var result = await _firebaseApi.registerUser(user.email, user.password);
+    String msg = '';
+
+    if (result == 'invalid-email') {
+      msg = 'El correo electrónico no es valido';
+    } else if (result == 'weak-password') {
+      msg = 'La contraseña debe tener mínimo 6 digitos';
+    } else if (result == 'email-already-in-use') {
+      msg = 'Ya existe una cuenta con ése correo electrónico';
+    } else if (result == 'network-request-failed') {
+      msg = 'Revise su conexión a internet';
+    } else {
+      msg = 'Usuario registrado con éxito';
+    }
+
+    _showMessage(msg);
   }
 
   void _onRegisterButtonClicked() {
     setState(() {
       if (_password.text == _repPassword.text) {
         //_data = 'Nombre: ${_name.text} \nCorreo electrónico: ${_email.text}';
-        var user = User(_name, _email, _password);
+        var user = User(_name.text, _email.text, _password.text);
         saveUser(user);
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
       } else {
