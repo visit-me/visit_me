@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:visit_me/repository/firebase_api.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visit_me/pages/register_page.dart';
@@ -15,6 +15,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  final FirebaseApi _firebaseApi = FirebaseApi();
+
   final _email = TextEditingController();
   final _password = TextEditingController();
 
@@ -45,11 +48,26 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   //Función para comparar los datos registrados en las preferencias compartidas
-  void _validateUser() {
-    if(_email.text == userLoad.email && _password.text == userLoad.password) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
+  void _validateUser() async {
+    if(_email.text.isEmpty || _password.text.isEmpty) {
+      _showMessage('Debe ingresar un correo y una contraseña');
+      
     } else {
+      var result = await _firebaseApi.logInUser(_email.text, _password.text);
+      String msg = '';
+
+      if (result == 'invalid-email') {
+      msg = 'El correo electrónico no es valido';
+    } else if (result == 'wrong-password') {
+      msg = 'Correo o contraseña incorrectos';
+    } else if (result == 'network-request-failed') {
+      msg = 'Revise su conexión a internet';
+    } else {
+      msg = 'Bienvenido a Visit-Me :D';
+    }
+
       _showMessage('Correo o contraseña inválidos');
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
     }
   }
 

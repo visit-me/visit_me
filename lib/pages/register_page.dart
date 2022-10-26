@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visit_me/pages/login_page.dart';
 import 'package:visit_me/repository/firebase_api.dart';
 import 'dart:convert';
