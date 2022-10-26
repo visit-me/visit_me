@@ -34,9 +34,12 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   //Función para guardar el usuario
-  void saveUser(User user) async {
-    //SharedPreferences prefs = await SharedPreferences.getInstance();
-    //prefs.setString('user', jsonEncode(user));
+  void _saveUser(User user) async {
+    var result = await _firebaseApi.createUser(user);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+  }
+
+  void _registerUser(User user) async {
     var result = await _firebaseApi.registerUser(user.email, user.password);
     String msg = '';
 
@@ -50,6 +53,8 @@ class _RegisterPageState extends State<RegisterPage> {
       msg = 'Revise su conexión a internet';
     } else {
       msg = 'Usuario registrado con éxito';
+      user.uid = result;
+      _saveUser(user);
     }
 
     _showMessage(msg);
@@ -58,10 +63,8 @@ class _RegisterPageState extends State<RegisterPage> {
   void _onRegisterButtonClicked() {
     setState(() {
       if (_password.text == _repPassword.text) {
-        //_data = 'Nombre: ${_name.text} \nCorreo electrónico: ${_email.text}';
-        var user = User(_name.text, _email.text, _password.text);
-        saveUser(user);
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+        var user = User('', _name.text, _email.text, _password.text);
+        _registerUser(user);
       } else {
         _showMessage('Las contaseñas deben ser iguales');
       }
