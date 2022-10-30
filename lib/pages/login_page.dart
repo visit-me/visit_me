@@ -25,16 +25,16 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {
-    _getUser();
+    //_getUser();
     super.initState();
   }
 
   //Traer el usuario del registro
-  _getUser() async {
+  /*_getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, dynamic> userMap = jsonDecode(prefs.getString('user')!);
     userLoad = User.fromJson(userMap);
-  }
+  }*/
 
   //Función para mostrar el mensage de warning si el usuario no es encontrado
   void _showMessage(String message) {
@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
       msg = 'Bienvenido a Visit-Me :D';
     }
 
-      _showMessage('Correo o contraseña inválidos');
+      _showMessage('Bienvenido');
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
     }
   }
