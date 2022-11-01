@@ -39,6 +39,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.pink,
       ),
+
+      darkTheme: ThemeData(
+        primarySwatch: Colors.pink,
+        brightness: Brightness.dark,
+              ),
       home: const SplashPage(),
     );
   }

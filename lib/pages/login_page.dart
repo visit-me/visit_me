@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   //Traer el usuario del registro
-  /*_getUser() async {
+ /* void _getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, dynamic> userMap = jsonDecode(prefs.getString('user')!);
     userLoad = User.fromJson(userMap);

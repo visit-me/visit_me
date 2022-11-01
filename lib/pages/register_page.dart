@@ -33,7 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  //Función para guardar el usuario
+   //Función para guardar el usuario
   void _saveUser(User user) async {
     var result = await _firebaseApi.createUser(user);
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
