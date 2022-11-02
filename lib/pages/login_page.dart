@@ -49,26 +49,28 @@ class _LoginPageState extends State<LoginPage> {
 
   //Función para comparar los datos registrados en las preferencias compartidas
   void _validateUser() async {
-    if(_email.text.isEmpty || _password.text.isEmpty) {
-      _showMessage('Debe ingresar un correo y una contraseña');
-      
-    } else {
-      var result = await _firebaseApi.logInUser(_email.text, _password.text);
+    var result = await _firebaseApi.logInUser(_email.text, _password.text);
       String msg = '';
 
-      if (result == 'invalid-email') {
+    if(_email.text.isEmpty || _password.text.isEmpty) {
+      _showMessage('Debe ingresar un correo y una contraseña');
+    } 
+
+    if (result == 'invalid-email') {
       msg = 'El correo electrónico no es valido';
+      _showMessage(msg);
     } else if (result == 'wrong-password') {
       msg = 'Correo o contraseña incorrectos';
+      _showMessage(msg);
     } else if (result == 'network-request-failed') {
       msg = 'Revise su conexión a internet';
+      _showMessage(msg);
     } else {
       msg = 'Bienvenido a Visit-Me :D';
-    }
-
-      _showMessage('Bienvenido');
+      _showMessage(msg);
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
     }
+
   }
 
   @override
