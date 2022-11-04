@@ -43,7 +43,11 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(
         primarySwatch: Colors.pink,
         brightness: Brightness.dark,
-              ),
+      ),
+
+      //Remove the debug banner
+      debugShowCheckedModeBanner: false,
+
       home: const SplashPage(),
     );
   }
