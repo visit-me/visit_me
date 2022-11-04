@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:visit_me/pages/list_poi.dart';
 import 'package:visit_me/repository/firebase_api.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -68,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       msg = 'Bienvenido a Visit-Me :D';
       _showMessage(msg);
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ListPoi()));
     }
 
   }
