@@ -39,15 +39,15 @@ class MyApp extends StatelessWidget {
         Locale('es', 'CO'),
       ],
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        primarySwatch: Colors.teal,
         navigationBarTheme: NavigationBarThemeData(
-          backgroundColor: Colors.pink.shade100,
-          indicatorColor: Colors.pink.shade500,
+          backgroundColor: Colors.teal.shade200,
+          indicatorColor: Colors.teal.shade500,
         ),
       ),
 
       darkTheme: ThemeData(
-        primarySwatch: Colors.pink,
+        primarySwatch: Colors.blueGrey,
         brightness: Brightness.dark,
       ),
 

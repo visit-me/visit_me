@@ -9,9 +9,9 @@ class CardList extends StatelessWidget {
     return Align(
         alignment: Alignment.topCenter,
         child: SizedBox(
-          height: 350,
+          height: 300,
           child: ListView(
-            padding: const EdgeInsets.all(35.0),
+            padding: const EdgeInsets.all(5.0),
             scrollDirection: Axis.horizontal,
             children: const <Widget>[
               CardImage(),

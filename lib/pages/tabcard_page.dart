@@ -1,38 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'home_page.dart';
+import 'package:visit_me/pages/home_page.dart';
 import 'list_poi.dart';
 import 'favorite_page.dart';
 
-class TabPage extends StatefulWidget {
-  const TabPage({Key? key}) : super(key: key);
-
+class TabPagecard extends StatefulWidget {
+  const TabPagecard ({Key? key}) : super(key: key);
 
   @override
-  State<TabPage> createState() => _TabPageState();
+  State<TabPagecard> createState() => _TabPagecardState();
 }
 
-class _TabPageState extends State<TabPage> {
-
-  int selectedTab = 0;
-
+class _TabPagecardState extends State<TabPagecard> {
+  int selectedTab = 2;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: Text(""),
-        backgroundColor:  Colors.white12,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-      ),
       body: IndexedStack(
         index: selectedTab,
         children: const <Widget>[
           ListPoi(),
           FavPage(),
-      ],
+          HomePage()
+        ],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedTab,
@@ -53,6 +42,10 @@ class _TabPageState extends State<TabPage> {
           NavigationDestination(
             icon: Icon(Icons.favorite_border),
             label: 'Favoritos',
+          ),
+          NavigationDestination(
+            icon: Icon(null),
+            label: '',
           ),
 
         ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:visit_me/pages/home_page.dart';
+import 'package:visit_me/pages/tab_page.dart';
+import 'package:visit_me/pages/tabcard_page.dart';
 
 final titles = ['Ventana al mundo', 'Aleta del tiburón', 'Malecón'];
 
@@ -22,9 +24,9 @@ class ListPoi extends StatelessWidget {
               child: ListTile(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomePage(),));
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
                   },
                   title: Text(titles[index]),
                   //subtitle: Text(subtitles[index]),
