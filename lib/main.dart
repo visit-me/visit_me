@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:visit_me/components/card_list.dart';
 import 'package:visit_me/firebase_options.dart';
+import 'package:visit_me/pages/list_poi.dart';
 import 'package:visit_me/pages/splash_page.dart';
 
 void main() async {
@@ -38,6 +40,10 @@ class MyApp extends StatelessWidget {
       ],
       theme: ThemeData(
         primarySwatch: Colors.pink,
+        navigationBarTheme: NavigationBarThemeData(
+          backgroundColor: Colors.pink.shade100,
+          indicatorColor: Colors.pink.shade500,
+        ),
       ),
 
       darkTheme: ThemeData(
@@ -52,3 +58,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

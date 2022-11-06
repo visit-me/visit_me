@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:visit_me/components/card_image.dart';
-
 class CardList extends StatelessWidget {
   const CardList({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class CardList extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             children: const <Widget>[
               CardImage(),
-            ],
+          ],
           ),
         )
     );
