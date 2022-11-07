@@ -8,10 +8,11 @@ class CardImage extends StatelessWidget {
 
     final card = Container(
       height: 230,
-      width: 380.0,
+      width: 365.0,
       margin: const EdgeInsets.only(
         top:5 ,
-        left: 10
+        left: 10,
+        right: 10
       ),
       decoration: const BoxDecoration(
         image: DecorationImage(

@@ -3,7 +3,6 @@ import 'package:visit_me/pages/aleta_tiburon_page.dart';
 import 'package:visit_me/pages/malecon_page.dart';
 import 'package:visit_me/pages/venta_al_mundo_page.dart';
 import 'package:visit_me/pages/tab_page.dart';
-import 'package:visit_me/pages/tabcard_page.dart';
 
 final titles = ['Ventana al mundo', 'Aleta del tiburón', 'Malecón'];
 const listNav = [HomePage(), AletaPage(), MaleconPage()];

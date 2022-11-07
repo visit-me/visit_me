@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
         Locale('es', 'CO'),
       ],
       theme: ThemeData(
+        useMaterial3: true,
         primarySwatch: Colors.teal,
         navigationBarTheme: NavigationBarThemeData(
           backgroundColor: Colors.teal.shade200,

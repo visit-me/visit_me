@@ -13,7 +13,7 @@ class TabPage extends StatefulWidget {
 }
 
 class _TabPageState extends State<TabPage> {
-
+  bool shadowColor = false;
   int selectedTab = 0;
 
   @override
@@ -22,8 +22,9 @@ class _TabPageState extends State<TabPage> {
 
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text(""),
-        backgroundColor:  Colors.white12,
+        title: Text("VISIT-ME"),
+        shadowColor: shadowColor ? Theme.of(context).colorScheme.shadow : null,
+        backgroundColor:  Colors.white10,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
       ),
