@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'home_page.dart';
+import 'venta_al_mundo_page.dart';
 import 'list_poi.dart';
 import 'favorite_page.dart';
 

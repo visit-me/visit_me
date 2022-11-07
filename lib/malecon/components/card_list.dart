@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:visit_me/components/card_image.dart';
+import 'package:visit_me/malecon/components/card_image.dart';
+
 class CardList extends StatelessWidget {
   const CardList({super.key});
 

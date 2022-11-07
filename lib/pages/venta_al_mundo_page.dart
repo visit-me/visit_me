@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:visit_me/components/description_place.dart';
-import 'package:visit_me/components/header_appbar.dart';
-import 'package:visit_me/pages/favorite_page.dart';
-import 'package:visit_me/pages/list_poi.dart';
-import 'package:visit_me/pages/tab_page.dart';
+import 'package:visit_me/ventana/components/header_appbar.dart';
+import '../ventana/components/description_place.dart';
 
 
 class HomePage extends StatefulWidget {

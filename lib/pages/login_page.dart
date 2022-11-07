@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visit_me/pages/register_page.dart';
 
 import '../models/user.dart';
-import 'home_page.dart';
+import 'venta_al_mundo_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -55,9 +55,7 @@ class _LoginPageState extends State<LoginPage> {
 
     if(_email.text.isEmpty || _password.text.isEmpty) {
       _showMessage('Debe ingresar un correo y una contraseña');
-    } 
-
-    if (result == 'invalid-email') {
+    } else if (result == 'invalid-email') {
       msg = 'El correo electrónico no es valido';
       _showMessage(msg);
     } else if (result == 'wrong-password') {

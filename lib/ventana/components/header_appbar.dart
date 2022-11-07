@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:visit_me/components/card_list.dart';
-import 'package:visit_me/components/gradient_back.dart';
+import 'package:visit_me/ventana/components/card_list.dart';
+import 'package:visit_me/ventana/components/gradient_back.dart';
 
 class HeaderAppBar extends StatelessWidget {
   const HeaderAppBar({super.key});

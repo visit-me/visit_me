@@ -11,11 +11,10 @@ class DescriptionPlace extends StatelessWidget {
         right: 20.0,
         left: 20.0
       ),
-      child: const Text('La Ventana al mundo es un monumento público ubicado en Barranquilla, Colombia. Fue construido a finales de 2018 para coincidir con los XXIII Juegos Centroamericanos y del Caribe de los cuales la ciudad fue anfitriona. \n \nLa obra es autoría de la arquitecta barranquillera Diana Escorcia Borelly, la construcción se dio por iniciativa de la compañía Tecnoglass S.A. en colaboración con otras compañías como Alutions by Tecnoglass, Aconstruir, Kuraray-Trosifol, Argos, M&P Distribuciones Valledupar (JLQG), GCC, Dow, Alloy, Alutrafic Led, Escenarios Deportivos, Smart Steel, así como la Alcaldía Distrital de Barranquilla.',
+      child: const Text('La Ventana de Campeones, diseñada por los arquitectos barranquilleros Miguel Ángel Cure y Pablo Andrés Castellano, y construida por Tecnoglass de la mano de sus empresas aliadas, es una estructura de 33 metros de alto, que marca el camino para el urbanismo en la ciudad al dar vida a un sector olvidado como la Isla de la Loma, que en un futuro se conectará con el renovado malecón. \n \nAsimismo, la rotonda donde se encuentra ubicado ofrece diversas vivencias para los visitantes. “Pueden aprender del Junior. Es un museo al aire libre, ves las huellas de los jugadores, lees sobre la historia de las estrellas que ha ganado el equipo y te tomas fotos con el plantel a través de pantallas digitales. Además, ubicamos taludes para que las personas tengan el mejor ángulo al momento de sacarse una selfie con La Aleta de fondo”, afirma Cure.',
       style: TextStyle(
         fontSize: 16.0,
-        fontWeight: FontWeight.w300,
-        color: Color(0xFF56575a)
+        fontWeight: FontWeight.w400,
       ),
       textAlign: TextAlign.justify,
       ),
@@ -29,7 +28,7 @@ class DescriptionPlace extends StatelessWidget {
               left: 20.0,
               right: 20.0
             ),
-            child: const Text('La Ventana al Mundo',
+            child: const Text('Aleta del Tiburón',
             style: TextStyle(
               fontSize: 30.0,
               fontWeight: FontWeight.w900
@@ -50,8 +49,7 @@ class DescriptionPlace extends StatelessWidget {
             child: const Text('Ciudad: Barranquilla',
               style: TextStyle(
                   fontSize: 16.0,
-                  fontWeight: FontWeight.w300,
-                  color: Color(0xFF56575a)
+                  fontWeight: FontWeight.w400,
             ),
             textAlign: TextAlign.left,
             ),
@@ -69,8 +67,7 @@ class DescriptionPlace extends StatelessWidget {
             child: const Text('Departamento: Atlántico',
               style: TextStyle(
                   fontSize: 16.0,
-                  fontWeight: FontWeight.w300,
-                  color: Color(0xFF56575a)
+                  fontWeight: FontWeight.w400,
             ),
             textAlign: TextAlign.left,
             ),
@@ -88,8 +85,7 @@ class DescriptionPlace extends StatelessWidget {
             child: const Text('Temperatura: 32°',
               style: TextStyle(
                   fontSize: 16.0,
-                  fontWeight: FontWeight.w300,
-                  color: Color(0xFF56575a)
+                  fontWeight: FontWeight.w400,
             ),
             textAlign: TextAlign.left,
             ),
