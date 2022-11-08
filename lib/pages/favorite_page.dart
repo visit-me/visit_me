@@ -16,22 +16,33 @@ class FavPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: titles.length,
-        itemBuilder: (context, index) {
-          return Card(
-              child: ListTile(
-                /*onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HomePage(),));
-                },*/
-                title: Text(titles[index]),
-                //subtitle: Text(subtitles[index]),
-                leading: Icon(Icons.favorite_border),
-                //trailing: Icon(icons[0])
-              ));
-        });
+    return Scaffold(
+        appBar: AppBar(
+            title: Text("VISIT-ME"),
+            backgroundColor:  Colors.white10,
+            surfaceTintColor: Colors.transparent,
+            elevation: 0,
+            centerTitle:true
+        ),
+    body: Center(
+          child:ListView.builder(
+              itemCount: titles.length,
+              itemBuilder: (context, index) {
+                return Card(
+                    child: ListTile(
+                      /*onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomePage(),));
+                      },*/
+                      title: Text(titles[index]),
+                      //subtitle: Text(subtitles[index]),
+                      leading: Icon(Icons.favorite_border),
+                      //trailing: Icon(icons[0])
+                    ));
+                  })
+          )
+    );
   }
 }

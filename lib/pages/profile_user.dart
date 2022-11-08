@@ -53,8 +53,15 @@ class _LogCardState extends State<LogCard> {
     String sName = _LogCardState().dataString[1]  ;
     String ico = _LogCardState().dataString[0].substring(0, 1);
     String sEmail = _LogCardState().dataString[0];
-
-    return ListView.builder(
+    return Scaffold(
+        appBar: AppBar(
+            title: Text("VISIT-ME"),
+            backgroundColor:  Color(0xF2F9F8FF),
+            elevation: 0,
+            centerTitle:true
+        ),
+        body: Center(
+        child: ListView.builder(
         itemCount: 1,
         itemBuilder: (context, index) {
          return Card(
@@ -68,7 +75,7 @@ class _LogCardState extends State<LogCard> {
                       backgroundColor: Colors.green,
                       radius: 115,
                       child: CircleAvatar(
-                        backgroundColor: Colors.greenAccent[100],
+                        backgroundColor: Colors.teal.shade50,
                         radius: 110,
                         child: CircleAvatar(backgroundColor: Color(0xFFB2DFDB),
                             child: Text('visit-me', style: TextStyle(fontSize: 35, color: Colors.white)),
@@ -99,7 +106,10 @@ class _LogCardState extends State<LogCard> {
               ],
             ),
           );
-        });
+        }
+        )
+        )
+        );
       }
     }
 

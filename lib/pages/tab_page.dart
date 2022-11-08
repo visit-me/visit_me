@@ -14,8 +14,6 @@ class TabPage extends StatefulWidget {
 }
 
 class _TabPageState extends State<TabPage> {
-
-
   bool shadowColor = false;
   int selectedTab = 0;
 
@@ -27,21 +25,22 @@ class _TabPageState extends State<TabPage> {
 
       extendBodyBehindAppBar: true,
 
-      appBar: AppBar(
+      /*appBar: AppBar(
         title: Text("VISIT-ME"),
         shadowColor: shadowColor ? Theme.of(context).colorScheme.shadow : null,
         backgroundColor:  Colors.white10,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         centerTitle:true
-      ),
+      ),*/
       body: IndexedStack(
         index: selectedTab,
         children: const <Widget>[
-          ListPoi(),
+          //ListPoi(),
+          ListTileSelector(),
           FavPage(),
-          LogCard
-            ()
+          LogCard(),
+
       ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -63,7 +62,8 @@ class _TabPageState extends State<TabPage> {
           NavigationDestination(
             icon: Icon(Icons.favorite_border),
             label: 'Favoritos',
-          ),NavigationDestination(
+          ),
+          NavigationDestination(
             icon: Icon(Icons.perm_identity_sharp),
             label: 'Perfil',
           ),
