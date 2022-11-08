@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visit_me/pages/register_page.dart';
 
 import '../models/user.dart';
-import 'venta_al_mundo_page.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,19 +24,6 @@ class _LoginPageState extends State<LoginPage> {
 
   User userLoad = User.Empty();
 
-  @override
-  void initState() {
-    //_getUser();
-    super.initState();
-  }
-
-  //Traer el usuario del registro
- /* void _getUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, dynamic> userMap = jsonDecode(prefs.getString('user')!);
-    userLoad = User.fromJson(userMap);
-  }*/
-
   //Función para mostrar el mensage de warning si el usuario no es encontrado
   void _showMessage(String message) {
     final scaffold = ScaffoldMessenger.of(context);
@@ -50,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
 
   //Función para comparar los datos registrados en las preferencias compartidas
   void _validateUser() async {
+
     var result = await _firebaseApi.logInUser(_email.text, _password.text);
       String msg = '';
 
@@ -67,6 +55,9 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       msg = 'Bienvenido a Visit-Me :D';
       _showMessage(msg);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('setUserVal', true);
+      await prefs.setString('userMail', _email.text);
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const TabPage()));
     }
 

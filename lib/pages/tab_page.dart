@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:visit_me/pages/profile_user.dart';
 import 'venta_al_mundo_page.dart';
 import 'list_poi.dart';
 import 'favorite_page.dart';
@@ -13,26 +14,34 @@ class TabPage extends StatefulWidget {
 }
 
 class _TabPageState extends State<TabPage> {
+
+
   bool shadowColor = false;
   int selectedTab = 0;
 
   @override
   Widget build(BuildContext context) {
+    // Mostrar barra superior (ocultar barra inferior)
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
     return Scaffold(
 
       extendBodyBehindAppBar: true,
+
       appBar: AppBar(
         title: Text("VISIT-ME"),
         shadowColor: shadowColor ? Theme.of(context).colorScheme.shadow : null,
         backgroundColor:  Colors.white10,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
+        centerTitle:true
       ),
       body: IndexedStack(
         index: selectedTab,
         children: const <Widget>[
           ListPoi(),
           FavPage(),
+          LogCard
+            ()
       ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -54,6 +63,9 @@ class _TabPageState extends State<TabPage> {
           NavigationDestination(
             icon: Icon(Icons.favorite_border),
             label: 'Favoritos',
+          ),NavigationDestination(
+            icon: Icon(Icons.perm_identity_sharp),
+            label: 'Perfil',
           ),
 
         ],
