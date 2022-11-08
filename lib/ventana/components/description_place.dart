@@ -24,7 +24,7 @@ class DescriptionPlace extends StatelessWidget {
       //alignment: Alignment.centerLeft,
       child: Container(
             margin: const EdgeInsets.only(
-              top: 325.0,
+              top: 335.0,
               left: 20.0,
               right: 20.0
             ),
