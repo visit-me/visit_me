@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:visit_me/pages/venta_al_mundo_page.dart';
+import 'package:visit_me/pages/PlaceView.dart';
 
 final titles = ['Favoritos'];
 

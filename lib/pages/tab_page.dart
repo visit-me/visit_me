@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:visit_me/pages/profile_user.dart';
-import 'venta_al_mundo_page.dart';
+import 'PlaceView.dart';
 import 'list_poi.dart';
 import 'favorite_page.dart';
 

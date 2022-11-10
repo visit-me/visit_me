@@ -1,17 +1,10 @@
+
 import 'package:flutter/material.dart';
-import 'package:visit_me/pages/aleta_tiburon_page.dart';
-import 'package:visit_me/pages/malecon_page.dart';
-import 'package:visit_me/pages/venta_al_mundo_page.dart';
-import 'package:visit_me/pages/tab_page.dart';
+import 'package:visit_me/pages/PlaceView.dart';
+
+
 
 final titles = ['Ventana al mundo', 'Aleta del tiburón', 'Malecón'];
-const listNav = [HomePage(), AletaPage(), MaleconPage()];
-
-/* final   subtitles = [
-  "Here is list 1 subtitle",
-  "Here is list 2 subtitle",
-  "Here is list 3 subtitle"
-];*/
 
 final img = [/*Ventana al mundo*/ "https://argos.co/wp-content/uploads/2021/04/argos-presente-en-la-construccion-de-la-ventana-al-mundo-simbolo-de-barranquilla.jpg",
 /*Alweta del tiburón*/ "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhCDqApAjc7-LZ0NolZ4ehlWxj5Tv521Ty_A&usqp=CAU",
@@ -31,7 +24,7 @@ class ListPoi extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => listNav[index]),
+                      MaterialPageRoute(builder: (context) => loadingPage(p:index,url:img[index])),
                     );
                   },
                   title: Text(titles[index]),
@@ -190,7 +183,7 @@ class GridBuilderState extends State<GridBuilder> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => listNav[index]),
+                MaterialPageRoute(builder: (context) => loadingPage(p:index,url:img[index])),
               );
             },
             onLongPress: () {
@@ -284,9 +277,9 @@ class _ListBuilderState extends State<ListBuilder> {
         itemBuilder: (_, int index) {
           return ListTile(
               onTap: () {
-                Navigator.push(
+                  Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => listNav[index]),
+                  MaterialPageRoute(builder: (context) =>loadingPage(p:index,url:img[index])),
                 );
               },
               onLongPress: () {
@@ -310,4 +303,215 @@ class _ListBuilderState extends State<ListBuilder> {
         });
   }
 }
+
+/*class loadingPage extends StatefulWidget {
+  const loadingPage({super.key, required int p});
+
+  @override
+  State <loadingPage> createState() => _loadingPageState();
+
+}
+
+class _loadingPageState extends State<loadingPage> {
+  @override
+
+  var p = 0;
+  dynamic place = {0:{'city':"killa"}};
+
+  CollectionReference _collectionRef =
+  FirebaseFirestore.instance.collection('place');
+
+  Future<Map> getPlace() async {
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    Map ListPlace = allData.asMap();
+
+    setState(() {
+      place = ListPlace;
+    });
+
+    return ListPlace;
+  }
+
+  @override
+  void initState() {
+    getPlace();
+    super.initState();
+  }
+
+
+  Widget build(BuildContext context) {
+    var Ancho = screenWidth(context, dividedBy: 1);
+    return Scaffold(
+       body:
+        FutureBuilder<Map>(
+            future: getPlace(),
+            builder: (BuildContext context, AsyncSnapshot<Map> snapshot){
+
+              Map? killa = snapshot.data!;
+              int p = _loadingPageState().p;
+
+             if(snapshot.data! == null) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else{
+              if(killa == null) {
+              return Center(
+              child: CircularProgressIndicator(),
+              );
+              } else{
+
+                return Stack(children:<Widget>[
+                Container(
+                  height: 320.0,
+                  decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                          colors: [
+                            Color(0xFFB2DFDB),
+                            Color(0xFFB2DFDB)
+                          ],
+                          begin: FractionalOffset(0.0, 0.0),
+                          end: FractionalOffset(0.0, 1.5),
+                          stops: [0.0, 0.5],
+                          tileMode: TileMode.clamp
+                      )
+                  ),
+                ),Align(
+                    alignment: Alignment.topCenter,
+                    child: SizedBox(
+                        height: 300,
+                        child: Container(
+                          height: 200,
+                          width: (Ancho-20),
+                          margin: const EdgeInsets.only(
+                              top:10 ,
+                              left: 10,
+                              right: 10
+                          ),
+                          decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('assets/images/ventana.jpg')
+                              ),
+                              borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                              shape: BoxShape.rectangle,
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                    color: Colors.black38,
+                                    blurRadius: 0,
+                                    offset: Offset(0.0, 7.0)
+                                )
+                              ]
+                          ),
+                        )
+                    )
+                ),
+                //DescriptionPlace()
+                ListView.builder(
+                    itemCount: 1,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Row(children: [Container(height: 240,)],),
+
+                          Align(
+                            //alignment: Alignment.centerLeft,
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                  top: 20,
+                                  left: 20.0,
+                                  right: 20.0
+                              ),
+                              child: Text( killa[p]['title'],
+                                style: TextStyle(
+                                    fontSize: 25.0,
+                                    fontWeight: FontWeight.w900
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+
+
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                  top: 20.0,
+                                  left: 20.0,
+                                  right: 20.0
+                              ),
+                              child: Text('Ciudad: '+killa[p]['city'],
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                //top: 20.0,
+                                  left: 20.0,
+                                  right: 20.0
+                              ),
+                              child: Text('Departamento: '+killa[p]['department'],
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                //top: 20.0,
+                                  left: 20.0,
+                                  right: 20.0
+                              ),
+                              child: Text('Temperatura: '+killa[p]['temperature'],
+                                style: TextStyle(
+                                  fontSize: 16.0,),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ),
+
+                          Container(
+                            margin: const EdgeInsets.only(
+                                top: 20.0,
+                                right: 20.0,
+                                left: 20.0
+                            ),
+                            child: Text(killa[p]['description'],
+                              style: TextStyle(
+                                fontSize: 15.0,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              textAlign: TextAlign.justify,
+                            ),
+                          ),
+
+                        ],
+                      );
+                    })
+              ]
+              );
+
+            }}}
+        )
+    );
+  }
+
+
+}
+*/
 

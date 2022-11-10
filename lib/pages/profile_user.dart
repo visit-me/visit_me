@@ -1,10 +1,9 @@
-// ignore_for_file: void_checks
-
-import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:visit_me/pages/login_page.dart';
-import '../models/user.dart';
+
 
 class LogCard extends StatefulWidget {
   const LogCard({Key? key}) : super(key: key);
@@ -14,29 +13,17 @@ class LogCard extends StatefulWidget {
 
 class _LogCardState extends State<LogCard> {
   bool shadowColor = false;
-  late String stringName = "vi";
-  late String stringEmail = "vi";
-  get userMail => null;
-  List dataString=["user@visit-me.com","visit-me"];
 
-  Future<List> _profdata() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? userMail = prefs.getString('userMail');
-      if(userMail != null){
-      stringEmail = userMail;
-      for (int i = 0; i < userMail.length; i++) {
-        if(userMail[i] == "@"){
-          stringName = userMail.substring(0, i);
-          break;}}}
-    dataString = [stringEmail,stringName];
-    return dataString;
-    }
-
-  void getValueName(){}
+  FirebaseFirestore db  = FirebaseFirestore.instance;
+  Future<Map<dynamic, dynamic>> getCurrentUser() async {
+    final docRef = db.collection("users").doc(FirebaseAuth.instance.currentUser?.uid);
+    DocumentSnapshot doc = await docRef.get();
+    final data = doc.data() as Map;
+    return data;
+  }
 
   @override
   void initState() {
-    _profdata();
     super.initState();
   }
 
@@ -50,17 +37,27 @@ class _LogCardState extends State<LogCard> {
 
   @override
   Widget build(BuildContext context) {
-    String sName = _LogCardState().dataString[1]  ;
-    String ico = _LogCardState().dataString[0].substring(0, 1);
-    String sEmail = _LogCardState().dataString[0];
-    return Scaffold(
+    _LogCardState().getCurrentUser();
+   return Scaffold(
         appBar: AppBar(
-            title: Text("VISIT-ME"),
-            backgroundColor:  Color(0xF2F9F8FF),
+            title: const Text("VISIT-ME"),
+            backgroundColor: Colors.white12,
             elevation: 0,
             centerTitle:true
         ),
-        body: Center(
+        body:
+          FutureBuilder<Map<dynamic, dynamic>>(
+          future:getCurrentUser(),
+          builder: (BuildContext context, AsyncSnapshot <Map<dynamic, dynamic>>snapshot){
+            Map? Mainuser = snapshot.data!;
+            final String ico = Mainuser!['name'].substring(0, 1);
+          if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.error != null) {
+          return const Center(child: Text('an error occured!'));
+          } else{ return
+
+        Center(
         child: ListView.builder(
         itemCount: 1,
         itemBuilder: (context, index) {
@@ -78,7 +75,7 @@ class _LogCardState extends State<LogCard> {
                         backgroundColor: Colors.teal.shade50,
                         radius: 110,
                         child: CircleAvatar(backgroundColor: Color(0xFFB2DFDB),
-                            child: Text('visit-me', style: TextStyle(fontSize: 35, color: Colors.white)),
+                            child: Text(ico, style: TextStyle(fontSize: 35, color: Colors.white)),
                             radius: 100), //CircleAvatar
                       ), //CircleAvatar
                     ), //CircleAvatar
@@ -86,9 +83,9 @@ class _LogCardState extends State<LogCard> {
                 Row(children: [Container(height: 50,)],),
 
                   ListTile(
-                  title: Text(sName),
-                  subtitle: Text(sEmail),
-                  leading: CircleAvatar(backgroundColor: Color(0xFFB2DFDB),child: Text(ico), radius: 30.0,),//trailing: Icon(Icons.favorite_border)
+                  title: Text(Mainuser!['name'], textAlign: TextAlign.center,),
+                  subtitle: Text(Mainuser!['email'], textAlign: TextAlign.center,),
+                  //leading: CircleAvatar(backgroundColor: Color(0xFFB2DFDB),child: Text(ico), radius: 30.0,),//trailing: Icon(Icons.favorite_border)
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -108,7 +105,10 @@ class _LogCardState extends State<LogCard> {
           );
         }
         )
-        )
+        );
+          }
+          }
+          ) //<-
         );
       }
     }

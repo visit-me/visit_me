@@ -2,9 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:visit_me/ventana/components/card_list.dart';
 import 'package:visit_me/firebase_options.dart';
-import 'package:visit_me/pages/list_poi.dart';
 import 'package:visit_me/pages/splash_page.dart';
 
 void main() async {
