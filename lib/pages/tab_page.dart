@@ -22,26 +22,15 @@ class _TabPageState extends State<TabPage> {
     // Mostrar barra superior (ocultar barra inferior)
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
     return Scaffold(
-
-      extendBodyBehindAppBar: true,
-
-      /*appBar: AppBar(
-        title: Text("VISIT-ME"),
-        shadowColor: shadowColor ? Theme.of(context).colorScheme.shadow : null,
-        backgroundColor:  Colors.white10,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        centerTitle:true
-      ),*/
       body: IndexedStack(
         index: selectedTab,
-        children: const <Widget>[
+        children:<Widget>[
           //ListPoi(),
           ListTileSelector(),
           FavPage(),
           LogCard(),
 
-      ],
+        ],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedTab,

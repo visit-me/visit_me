@@ -1,41 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:visit_me/pages/PlaceView.dart';
-
-
-
-final titles = ['Ventana al mundo', 'Aleta del tiburón', 'Malecón'];
-
-final img = [/*Ventana al mundo*/ "https://argos.co/wp-content/uploads/2021/04/argos-presente-en-la-construccion-de-la-ventana-al-mundo-simbolo-de-barranquilla.jpg",
-/*Alweta del tiburón*/ "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhCDqApAjc7-LZ0NolZ4ehlWxj5Tv521Ty_A&usqp=CAU",
-/*Malecón*/ "https://www.elespectador.com/resizer/7dPYuMzBE77eu5SVPqQkoY3950Y=/525x350/filters:format(jpeg)/cloudfront-us-east-1.images.arcpublishing.com/elespectador/ZBHIOHNLUZF2JINOTQ7KODYENI.jpeg",
-
-];
-class ListPoi extends StatelessWidget {
-  const ListPoi({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: titles.length,
-        itemBuilder: (context, index) {
-          return Card(
-              child: ListTile(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => loadingPage(p:index,url:img[index])),
-                    );
-                  },
-                  title: Text(titles[index]),
-                  //subtitle: Text(subtitles[index]),
-                  leading: CircleAvatar(
-                      backgroundImage: NetworkImage(img[index])),
-                  //trailing: Icon(Icons.favorite_border)
-          ));
-        });
-  }
-}
 
 class ListTileSelector extends StatefulWidget {
   const ListTileSelector({super.key});
@@ -70,6 +35,11 @@ class ListTileSelectorState extends State<ListTileSelector> {
 
   @override
   Widget build(BuildContext context) {
+
+    final ListBox = GetStorage();
+    List titles = ListBox.read('Titles');
+    List img = ListBox.read('Urls');
+
     return Scaffold(
         appBar: AppBar(
           title: const
@@ -174,6 +144,9 @@ class GridBuilderState extends State<GridBuilder> {
 
   @override
   Widget build(BuildContext context) {
+    final ListBox = GetStorage();
+    List titles = ListBox.read('Titles');
+    List img = ListBox.read('Urls');
     return GridView.builder(
         itemCount: titles.length,
         gridDelegate:
@@ -217,7 +190,6 @@ class GridBuilderState extends State<GridBuilder> {
                       value: widget.selectedList[index]
                        )
 
-
                       :Container(
                          decoration: BoxDecoration(
                           color: Colors.white70.withOpacity(0.0),
@@ -236,7 +208,24 @@ class GridBuilderState extends State<GridBuilder> {
                            borderRadius: BorderRadius.all(
                              Radius.circular(5),
                            ),
-                             )
+                             ),
+                           child:Align(
+                               alignment: Alignment.bottomCenter,
+                               child:Container(
+                                   decoration: BoxDecoration(
+                                   color: Colors.white38),
+                                   child:
+
+                                   Row(
+                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                     children: [
+                                       Container(
+                                       height: 25,
+                                       child:Text(titles[index],
+                                           style: TextStyle(fontSize: 12.0)
+                                       ),)]
+                                       )
+                               )) ,
                            ),
                         )
                        ),
@@ -272,6 +261,9 @@ class _ListBuilderState extends State<ListBuilder> {
 
   @override
   Widget build(BuildContext context) {
+    final ListBox = GetStorage();
+    List titles = ListBox.read('Titles');
+    List img = ListBox.read('Urls');
     return ListView.builder(
         itemCount:titles.length,
         itemBuilder: (_, int index) {

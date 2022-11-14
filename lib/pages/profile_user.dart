@@ -22,10 +22,7 @@ class _LogCardState extends State<LogCard> {
     return data;
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
+
 
    void sendout() async {
      SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -49,15 +46,16 @@ class _LogCardState extends State<LogCard> {
           FutureBuilder<Map<dynamic, dynamic>>(
           future:getCurrentUser(),
           builder: (BuildContext context, AsyncSnapshot <Map<dynamic, dynamic>>snapshot){
-            Map? Mainuser = snapshot.data!;
-            final String ico = Mainuser!['name'].substring(0, 1);
+            Map? Mainuser = snapshot.data;
+
           if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
           } else if (snapshot.error != null) {
           return const Center(child: Text('an error occured!'));
-          } else{ return
+          } else{
 
-        Center(
+            final ico = Mainuser!['name']?.substring(0, 1);
+            return Center(
         child: ListView.builder(
         itemCount: 1,
         itemBuilder: (context, index) {
@@ -75,7 +73,7 @@ class _LogCardState extends State<LogCard> {
                         backgroundColor: Colors.teal.shade50,
                         radius: 110,
                         child: CircleAvatar(backgroundColor: Color(0xFFB2DFDB),
-                            child: Text(ico, style: TextStyle(fontSize: 35, color: Colors.white)),
+                            child: Text(ico, style: TextStyle(fontSize: 100, color: Colors.white)),
                             radius: 100), //CircleAvatar
                       ), //CircleAvatar
                     ), //CircleAvatar
@@ -83,8 +81,8 @@ class _LogCardState extends State<LogCard> {
                 Row(children: [Container(height: 50,)],),
 
                   ListTile(
-                  title: Text(Mainuser!['name'], textAlign: TextAlign.center,),
-                  subtitle: Text(Mainuser!['email'], textAlign: TextAlign.center,),
+                  title: Text(Mainuser['name'], textAlign: TextAlign.center,),
+                  subtitle: Text(Mainuser['email'], textAlign: TextAlign.center,),
                   //leading: CircleAvatar(backgroundColor: Color(0xFFB2DFDB),child: Text(ico), radius: 30.0,),//trailing: Icon(Icons.favorite_border)
                 ),
                 Row(

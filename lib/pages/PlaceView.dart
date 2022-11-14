@@ -1,43 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:visit_me/pages/favorite_page.dart';
-import 'package:visit_me/pages/list_poi.dart';
 import 'Screensize_reducers.dart';
-
-/*
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-
-}
-
-class _HomePageState extends State<HomePage> {
-
-
-  @override
-  Widget build(BuildContext context) {
-    var Ancho = screenWidth(context, dividedBy: 1);
-    return Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          title: Text(""),
-            backgroundColor: Colors.transparent,
-            surfaceTintColor: Colors.transparent,
-            elevation: 0,
-        ),
-      body:
-         Stack(children: <Widget>[loadingPage(),]));
-  }
-}*/
+import 'package:visit_me/pages/tab_page.dart';
+final ListBox = GetStorage();
+List fav = ListBox.read('IsFav');
 
 class loadingPage extends StatefulWidget {
-   final p;
-   final url;
-   const loadingPage({super.key, this.p, this.url});
+   final int p;
+   final String url;
+   const loadingPage({super.key, required this.p, required this.url});
 
   @override
   State <loadingPage> createState() => _loadingPageState();
@@ -63,11 +36,10 @@ class _loadingPageState extends State<loadingPage> {
     super.initState();
   }
 
-  Map ini = {0:{'title':'title','city':"Barranquilla",'department':"Atlántico",'temperature':'32°','description':"Espere joven"}};
 
 Widget build(BuildContext context) {
   var Ancho = screenWidth(context, dividedBy: 1);
-  return Scaffold(
+   return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(""),
@@ -76,22 +48,23 @@ Widget build(BuildContext context) {
         elevation: 0,
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: null, label:Text('Fav') ,icon: Icon(Icons.favorite_border),
+        onPressed: (){
+
+        }
+        , label:Text('Fav') ,icon: Icon(Icons.favorite_border),
       ),
       body:
       FutureBuilder<Map>(
           future: getPlace(),
-          initialData: ini,
           builder: (BuildContext context, AsyncSnapshot snapshot){
-
-            Map? killa = snapshot.data!;
+            Map? killa = snapshot.data;
             int p = widget.p;
-
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.error != null) {
               return const Center(child: Text('an error occured!'));
             } else{
+              bool isfav = killa![p]['fav'];
               if(killa == null) {
                 return Center(
                   child: CircularProgressIndicator(),
@@ -172,18 +145,19 @@ Widget build(BuildContext context) {
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
+
                               children: <Widget>[
                                 TextButton.icon(     // <-- TextButton
                                   onPressed: () {
-                                    Navigator.
-                                    pushReplacement(
-                                        context, MaterialPageRoute(builder: (context) => FavPage()));
-                                  },
+                                    isfav ?  FavPageState().removeFav(killa[p]['title']) : FavPageState().addFav(killa[p]['title']);
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                                  builder: (context) => FavPage())).then((value) =>TabPage());
+                                                                     },
                                   icon: Icon(
-                                    Icons.map_outlined,
+                                    isfav ? Icons.favorite : Icons.favorite_border,
                                     size: 24.0,
                                   ),
-                                  label: Text('Mapa'),
+                                  label: Text(isfav ? "Favorito" : "Agregar a favoritos"),
                                 ),
                               ],
                             ),
