@@ -1,10 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:visit_me/pages/PlaceView.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:visit_me/pages/login_page.dart';
+import 'package:visit_me/pages/tab_page.dart';
+FirebaseFirestore db  = FirebaseFirestore.instance;
 final ListBox = GetStorage();
-final listFireFav = ListBox.read('IsFav');
-List fav =[];
+List img = ListBox.read('Urls');
+
 
 class FavPage extends StatefulWidget {
   const FavPage({super.key});
@@ -14,91 +18,126 @@ class FavPage extends StatefulWidget {
 }
 
 class FavPageState  extends State<FavPage> {
+  List fav = ListBox.read('FavList');
+  List L = [];
 
-  FirebaseFirestore db  = FirebaseFirestore.instance;
 
-   dynamic SetFire() async {
+  void initState(){
+    ListBox.read('FavList') == null && ListBox.read('IsFav')!= null
+    ? fav.addAll(ListBox.read('IsFav')):null;
+    super.initState();
+  } // carga los favoritos de firestore
 
-     var collection = FirebaseFirestore.instance.collection('place');
+   dynamic setFire() async {
+     var collection = FirebaseFirestore.instance.collection('users');
      collection
-         .doc('1')
-         .update({'fav' : 'true'}) // <-- Updated data
+         .doc(FirebaseAuth.instance.currentUser?.uid)
+         .set({'fav' : fav}, SetOptions(merge: true)) // <-- Updated data
          .then((_) => print('Success'))
          .catchError((error) => print('Failed: $error'));
-      }
-
-
-  dynamic getPlace (){
-   ListBox.read('FavList') == null? null :
-   fav.addAll(ListBox.read('FavList'));
-  }
+      }//almacea los favoritos en firestore
 
   dynamic isFav(String place){
     bool isbool;
     fav.contains(place) ? isbool = true : isbool = false;
     return isbool;
-  }
+  }// comprueba que el lugar exista en la lista de favoritos.
 
   dynamic addFav(String place){
     fav.add(place);
     ListBox.write('FavList',fav);
-    SetFire();
-  }
+   }// agrega nuevo lugar a favoritos y lo almacena localmente
 
   dynamic removeFav(String place){
     fav.remove(place);
     ListBox.write('FavList',fav);
-  }
+    }//remueve nuevo lugar a favoritos y lo elimina localmente
 
   @override
   Widget build(BuildContext context) {
-    List L = fav;
-
+    L = fav; // se emplea  L como constructor de fav, para evidtar errores de modificacion en medio de la construccion del widget
+    // los elementos en L se usan para determinar la posicion de los objetos en los arrays para su carga.
 
      return Scaffold(
         appBar: AppBar(
-            title: Text("VISIT-ME"),
+            title: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "VISIT-ME",
+                      ),
+                  Text(
+                    "LUGARES FAVORITOS",
+                    style: TextStyle(fontSize: 12.0),
+                  ),
+                ]
+            ),actions: <Widget>[
+              
+                IconButton(
+                  icon: const Icon(Icons.cloud_upload_outlined),
+                  onPressed: () {
+                    FavPageState().setFire();
+                    var snackBar = SnackBar(content: Text("se han guardado sus favoritos :D"));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    },)
+                          ],
             backgroundColor:  Colors.white10,
             surfaceTintColor: Colors.transparent,
             elevation: 0,
             centerTitle:true
-        ),
-    body: Stack(
+        ), // configura el app bar
+     body: Stack(
       children: <Widget>[
-      ListTile(title: Text("LUGARES FAVORITOS", textAlign: TextAlign.center,),) ,
-      L.length >0 ?
+      (L.length >0 && L!=null) ? // comprueba que L es un array
        Center(
             child:
             ListView.builder(
-                itemCount: L.length,
+                itemCount: L.length, // determina el numero de elementos en el array L
                 itemBuilder: (context, index) {
                   return Card(
                       child: Column(
                       children: [
-                      Container(
+                        InkWell(child:Container(
                       height: 260,
                       decoration: BoxDecoration(
-                      /*image: DecorationImage(
+                      image: DecorationImage(
                       image: NetworkImage(img[index]),
                       fit: BoxFit.cover,
-                      )*/)),
+                      ))),onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => loadingPage(p:index,url:img[index])),
+                          );// se emplea el Inkwell para la funcion de onTap y enviar al viewplace
+                        },
+                        ),
                        ListTile(
                         /*onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const HomePage(),));
-                        },*/
+                            context,
+                            MaterialPageRoute(builder: (context) => loadingPage(p:index,url:img[index])),
+                          );
+                        },*/ // se desactiva para que al precionar en el listtitle no interfiera en el elimar de fav
                         title: Text(L[index]),
                         tileColor:Colors.white24,
                         //subtitle: Text(subtitles[index]),
-                       trailing:Icon(Icons.favorite, color: Colors.teal,),
+                       trailing: IconButton(
+                         icon:Icon(Icons.favorite),
+                         onPressed: () => {FavPageState().removeFav(L[index])},// llama a eliminar fav desde el icono.
+                         color:Colors.teal,
+                         padding: EdgeInsets.all(10.0),
+                        ),
                         //trailing: Icon(icons[0])
-                      )])
+                      )]
+                    )
                     );
                     })
-            )
-       :const Center(child: Text('No items'))
+            ):Align(child: Container(
+                height: 150,
+                padding: EdgeInsets.all(20), //You can use EdgeInsets like above
+                margin: EdgeInsets.all(20),
+                child: Center(child: Text('No tienes favoritos aun, puedes agregarlo ingresadon a las tarjetas en lugares')),
+                    )), //texto en caso de no hallar favoritos
       ],)
     );
   }

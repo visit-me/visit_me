@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:get_storage/get_storage.dart';
@@ -19,7 +20,6 @@ class _SplashPageState extends State<SplashPage> {
 
   List listTitles = [];
   List listUrl = [];
-  List listIsFav = [];
 
   //Inicializar la función _closeSplash
   void initState(){
@@ -28,27 +28,33 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
   }
 
-  Future<Map> getPlace() async {
+
+  Future<Map> getPlace() async { // funcion para carga la informacion de firestore
 
     @override
     CollectionReference _collectionRef =
     FirebaseFirestore.instance.collection('place');
-
     QuerySnapshot querySnapshot = await _collectionRef.get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    Map ListPlace = allData.asMap();
+    Map ListPlace = allData.asMap(); // carga los doc almacenados en la ruta place de firestore
 
     for (int i = 0; i < ListPlace.length; i++) {
-     listTitles.add(ListPlace[i]['title']);
-     listUrl.add(ListPlace[i]['url']);
-     listIsFav.add(ListPlace[i]['fav']);
-    }
+      listTitles.add(ListPlace[i]['title']);
+      listUrl.add(ListPlace[i]['url']);
+    } // almacena el listado de lugares y las urls de la imagenes
 
-    final ListBox = GetStorage();
-    ListBox.write('Titles', listTitles);
-    ListBox.write('Urls', listUrl);
-    ListBox.write('Isfav', listIsFav);
-    print(listIsFav);
+
+       final docRef = FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser?.uid);
+       DocumentSnapshot doc = await docRef.get();
+       final data = doc.data() as Map;
+       List ListFavFire = data['fav'];
+       print(ListFavFire);
+
+    final ListBox = GetStorage(); // gestor de almacenamiento local.
+    ListBox.write('Titles', listTitles); //titulos de los lugares
+    ListBox.write('Urls', listUrl);// urls de la imagenes
+    ListBox.write('Isfav', ListFavFire); // lugares favoritos
+
     return ListPlace;
   }
 

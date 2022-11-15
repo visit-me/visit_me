@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:visit_me/pages/login_page.dart';
-
+import 'package:visit_me/pages/favorite_page.dart';
 
 class LogCard extends StatefulWidget {
   const LogCard({Key? key}) : super(key: key);
@@ -25,6 +25,7 @@ class _LogCardState extends State<LogCard> {
 
 
    void sendout() async {
+     FavPageState().setFire();
      SharedPreferences prefs = await SharedPreferences.getInstance();
      await prefs.setBool('setUserVal', false);
      final bool? UserVal = prefs.getBool('setUserVal');
@@ -47,14 +48,16 @@ class _LogCardState extends State<LogCard> {
           future:getCurrentUser(),
           builder: (BuildContext context, AsyncSnapshot <Map<dynamic, dynamic>>snapshot){
             Map? Mainuser = snapshot.data;
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
+            final numFav= Mainuser!['fav'].length;
+            if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
           } else if (snapshot.error != null) {
           return const Center(child: Text('an error occured!'));
           } else{
 
-            final ico = Mainuser!['name']?.substring(0, 1);
+            final ico = Mainuser!['name']?.substring(0, 1); // extractor de inicial
+
+            // numero de fav en firebase
             return Center(
         child: ListView.builder(
         itemCount: 1,
@@ -79,12 +82,17 @@ class _LogCardState extends State<LogCard> {
                     ), //CircleAvatar
                     ]),
                 Row(children: [Container(height: 50,)],),
-
-                  ListTile(
+                ListTile(
                   title: Text(Mainuser['name'], textAlign: TextAlign.center,),
                   subtitle: Text(Mainuser['email'], textAlign: TextAlign.center,),
-                  //leading: CircleAvatar(backgroundColor: Color(0xFFB2DFDB),child: Text(ico), radius: 30.0,),//trailing: Icon(Icons.favorite_border)
+                 //leading: CircleAvatar
+                    // (backgroundColor: Color(0xFFB2DFDB),child: Text(ico), radius: 30.0,),//trailing: Icon(Icons.favorite_border)
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Container(height: 20,
+                    child: Text("favoritos: $numFav", textAlign: TextAlign.center,),)],),
+                // favirtos cargados en firebase al arrancar.
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

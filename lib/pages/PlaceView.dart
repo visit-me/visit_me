@@ -8,8 +8,9 @@ final ListBox = GetStorage();
 List fav = ListBox.read('IsFav');
 
 class loadingPage extends StatefulWidget {
-   final int p;
-   final String url;
+
+  final int p; // p toma el valor del index o posicion de lista de lugares
+   final String url; // toma url de lista de lugares
    const loadingPage({super.key, required this.p, required this.url});
 
   @override
@@ -28,7 +29,7 @@ class _loadingPageState extends State<loadingPage> {
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     Map ListPlace = allData.asMap();
     return ListPlace;
-  }
+  }// carga los datos de firebase para  actualizar en la carga de page
 
   @override
   void initState() {
@@ -38,7 +39,8 @@ class _loadingPageState extends State<loadingPage> {
 
 
 Widget build(BuildContext context) {
-  var Ancho = screenWidth(context, dividedBy: 1);
+  var Ancho = screenWidth(context, dividedBy: 1); // clase que se encarga de obtener el ancho de la pantalla
+
    return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -50,26 +52,30 @@ Widget build(BuildContext context) {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){
 
+          // <- aqui va el navigetor para ir a la pagina de mapa
+
         }
-        , label:Text('Fav') ,icon: Icon(Icons.favorite_border),
+        , label:Text('Mapa ') ,icon: Icon(Icons.map_outlined),
       ),
       body:
       FutureBuilder<Map>(
           future: getPlace(),
           builder: (BuildContext context, AsyncSnapshot snapshot){
-            Map? killa = snapshot.data;
-            int p = widget.p;
+            Map? killa = snapshot.data; // resultado de la funcion, requerido para el futurebuilder.
+
+            int p = widget.p; // getter del valor p.
+
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.error != null) {
               return const Center(child: Text('an error occured!'));
             } else{
-              bool isfav = killa![p]['fav'];
+              bool isfav = FavPageState().isFav(killa![p]['title']);
               if(killa == null) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
-              } else{
+              } else{ // los validadores de la no nulilidad del los datos traidos de firebase
 
                 return Stack(children:<Widget>[
                   Container(
@@ -149,6 +155,7 @@ Widget build(BuildContext context) {
                               children: <Widget>[
                                 TextButton.icon(     // <-- TextButton
                                   onPressed: () {
+                                    // bolean de fuciones addFav y removeFav
                                     isfav ?  FavPageState().removeFav(killa[p]['title']) : FavPageState().addFav(killa[p]['title']);
                                     Navigator.of(context).push(MaterialPageRoute(
                                                   builder: (context) => FavPage())).then((value) =>TabPage());
@@ -241,7 +248,7 @@ Widget build(BuildContext context) {
 
 
 }
-
+// otro boton flotante de ejemplo
 class Floatbottomfav extends StatelessWidget {
   const Floatbottomfav({super.key});
 
