@@ -1,13 +1,13 @@
+import 'package:dynamic_url_image_cache/dynamic_url_image_cache.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:visit_me/pages/PlaceView.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:visit_me/pages/login_page.dart';
 import 'package:visit_me/pages/tab_page.dart';
+
 FirebaseFirestore db  = FirebaseFirestore.instance;
 final ListBox = GetStorage();
-List img = ListBox.read('Urls');
 
 
 class FavPage extends StatefulWidget {
@@ -18,9 +18,9 @@ class FavPage extends StatefulWidget {
 }
 
 class FavPageState  extends State<FavPage> {
-  List fav = ListBox.read('FavList');
-  List L = [];
-
+  Map titleUrls = ListBox.read('titleUrls');
+  List fav =ListBox.read('FavList');
+  int numFav = 0;
 
   void initState(){
     ListBox.read('FavList') == null && ListBox.read('IsFav')!= null
@@ -46,19 +46,42 @@ class FavPageState  extends State<FavPage> {
   dynamic addFav(String place){
     fav.add(place);
     ListBox.write('FavList',fav);
-   }// agrega nuevo lugar a favoritos y lo almacena localmente
+    }// agrega nuevo lugar a favoritos y lo almacena localmente
 
   dynamic removeFav(String place){
     fav.remove(place);
     ListBox.write('FavList',fav);
-    }//remueve nuevo lugar a favoritos y lo elimina localmente
+  }//remueve nuevo lugar a favoritos y lo elimina localmente
+
+  void _showAlertDialog(int index) {
+    showDialog(
+        context: context,
+        builder: (buildcontext) {
+          return AlertDialog(
+            title: Text("Eliminar de favoritos"),
+            content: Text("¿seguro que quieres eliminar este lugar?"),
+            actions: <Widget>[
+              TextButton(
+                child: Text("Eliminar", style: TextStyle(color: Colors.red),),
+                onPressed: (){FavPageState().removeFav(fav[index]);
+                Navigator.of(context).pop();
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => TabPage(tab: 1,)));
+                  },
+              ),
+              TextButton(
+                child: Text("Cancelar", style: TextStyle(color: Colors.blue),),
+                onPressed: (){ Navigator.of(context).pop(); },
+              )
+            ],
+          );
+        }
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    L = fav; // se emplea  L como constructor de fav, para evidtar errores de modificacion en medio de la construccion del widget
-    // los elementos en L se usan para determinar la posicion de los objetos en los arrays para su carga.
-
-     return Scaffold(
+      numFav = fav.length;
+      return Scaffold(
         appBar: AppBar(
             title: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -86,30 +109,30 @@ class FavPageState  extends State<FavPage> {
             surfaceTintColor: Colors.transparent,
             elevation: 0,
             centerTitle:true
-        ), // configura el app bar
+        ),
+          // configura el app bar
      body: Stack(
       children: <Widget>[
-      (L.length >0 && L!=null) ? // comprueba que L es un array
+      (numFav >0 && fav!= null) ? // comprueba que L es un array
        Center(
-            child:
-            ListView.builder(
-                itemCount: L.length, // determina el numero de elementos en el array L
+            child:ListView.builder(
+                itemCount: fav.length, // determina el numero de elementos en el array L
                 itemBuilder: (context, index) {
                   return Card(
                       child: Column(
                       children: [
                         InkWell(child:Container(
-                      height: 260,
-                      decoration: BoxDecoration(
-                      image: DecorationImage(
-                      image: NetworkImage(img[index]),
-                      fit: BoxFit.cover,
-                      ))),onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => loadingPage(p:index,url:img[index])),
-                          );// se emplea el Inkwell para la funcion de onTap y enviar al viewplace
-                        },
+                            height: 260,
+                            decoration: BoxDecoration(
+                            image: DecorationImage(
+                            image:NetworkImage(titleUrls[fav[index]]),
+                            fit: BoxFit.cover,
+                            ))),onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => loadingPage(p:index,url:titleUrls[fav[index]]),
+                                ));// se emplea el Inkwell para la funcion de onTap y enviar al viewplace
+                              },
                         ),
                        ListTile(
                         /*onTap: () {
@@ -118,12 +141,12 @@ class FavPageState  extends State<FavPage> {
                             MaterialPageRoute(builder: (context) => loadingPage(p:index,url:img[index])),
                           );
                         },*/ // se desactiva para que al precionar en el listtitle no interfiera en el elimar de fav
-                        title: Text(L[index]),
+                        title: Text(fav[index]),
                         tileColor:Colors.white24,
                         //subtitle: Text(subtitles[index]),
                        trailing: IconButton(
                          icon:Icon(Icons.favorite),
-                         onPressed: () => {FavPageState().removeFav(L[index])},// llama a eliminar fav desde el icono.
+                         onPressed: () => { _showAlertDialog(index)},// llama a eliminar fav desde el icono.
                          color:Colors.teal,
                          padding: EdgeInsets.all(10.0),
                         ),

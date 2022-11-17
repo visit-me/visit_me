@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:visit_me/pages/login_page.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:visit_me/pages/favorite_page.dart';
+import 'package:visit_me/pages/login_page.dart';
+final ListBox = GetStorage();
 
 class LogCard extends StatefulWidget {
   const LogCard({Key? key}) : super(key: key);
@@ -26,11 +27,7 @@ class _LogCardState extends State<LogCard> {
 
    void sendout() async {
      FavPageState().setFire();
-     SharedPreferences prefs = await SharedPreferences.getInstance();
-     await prefs.setBool('setUserVal', false);
-     final bool? UserVal = prefs.getBool('setUserVal');
-     print(UserVal);
-
+     ListBox.write('IsUserval', false);
   }
 
   @override
@@ -48,15 +45,14 @@ class _LogCardState extends State<LogCard> {
           future:getCurrentUser(),
           builder: (BuildContext context, AsyncSnapshot <Map<dynamic, dynamic>>snapshot){
             Map? Mainuser = snapshot.data;
-            final numFav= Mainuser!['fav'].length;
-            if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
           } else if (snapshot.error != null) {
           return const Center(child: Text('an error occured!'));
           } else{
 
             final ico = Mainuser!['name']?.substring(0, 1); // extractor de inicial
-
+            int l = Mainuser['fav'].length;
             // numero de fav en firebase
             return Center(
         child: ListView.builder(
@@ -91,7 +87,7 @@ class _LogCardState extends State<LogCard> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [Container(height: 20,
-                    child: Text("favoritos: $numFav", textAlign: TextAlign.center,),)],),
+                    child: Text("favoritos: $l", textAlign: TextAlign.center,),)],),
                 // favirtos cargados en firebase al arrancar.
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

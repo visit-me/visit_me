@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:visit_me/pages/profile_user.dart';
-import 'PlaceView.dart';
-import 'list_poi.dart';
 import 'favorite_page.dart';
+import 'list_poi.dart';
 
 class TabPage extends StatefulWidget {
-  const TabPage({Key? key}) : super(key: key);
+  final tab;
+  const TabPage({Key? key,this.tab});
 
 
   @override
-  State<TabPage> createState() => _TabPageState();
+  State<TabPage> createState() => TabPageState();
 }
 
-class _TabPageState extends State<TabPage> {
-  bool shadowColor = false;
+class TabPageState extends State<TabPage> {
   int selectedTab = 0;
+
+  void initState(){
+    widget.tab == null? null: selectedTab =widget.tab;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+
+
+
     // Mostrar barra superior (ocultar barra inferior)
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.top]);
     return Scaffold(

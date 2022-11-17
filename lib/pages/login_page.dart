@@ -1,12 +1,11 @@
-import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:visit_me/pages/register_page.dart';
 import 'package:visit_me/pages/tab_page.dart';
 import 'package:visit_me/repository/firebase_api.dart';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:visit_me/pages/register_page.dart';
 
 import '../models/user.dart';
-
+final ListBox = GetStorage();
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -55,9 +54,7 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       msg = 'Bienvenido a Visit-Me :D';
       _showMessage(msg);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('setUserVal', true);
-      await prefs.setString('userMail', _email.text);
+      ListBox.write('IsUserval', true);
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const TabPage()));
     }
 

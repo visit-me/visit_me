@@ -384,7 +384,7 @@ class _loadingPageState extends State<loadingPage> {
                           decoration: const BoxDecoration(
                               image: DecorationImage(
                                   fit: BoxFit.cover,
-                                  image: AssetImage('assets/images/ventana.jpg')
+                                  image: AssetImage('')
                               ),
                               borderRadius: BorderRadius.all(Radius.circular(15.0)),
                               shape: BoxShape.rectangle,

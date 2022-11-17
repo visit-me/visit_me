@@ -44,6 +44,8 @@ dependencies:
   firebase_auth: ^4.0.2
   cloud_firestore: ^4.0.2
   get_storage: 2.0.3
+  get: ^4.6.5
+  dynamic_url_image_cache: 1.0.0
 
 
 dev_dependencies:

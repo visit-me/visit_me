@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:visit_me/pages/favorite_page.dart';
+
 import 'Screensize_reducers.dart';
-import 'package:visit_me/pages/tab_page.dart';
 final ListBox = GetStorage();
 List fav = ListBox.read('IsFav');
 
@@ -25,9 +25,10 @@ class _loadingPageState extends State<loadingPage> {
   FirebaseFirestore.instance.collection('place');
 
   Future<Map> getPlace() async {
-    QuerySnapshot querySnapshot = await _collectionRef.get();
+    /*QuerySnapshot querySnapshot = await _collectionRef.get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    Map ListPlace = allData.asMap();
+    Map ListPlace = allData.asMap();*/
+    Map ListPlace = ListBox.read('MapPlace');
     return ListPlace;
   }// carga los datos de firebase para  actualizar en la carga de page
 
@@ -62,15 +63,12 @@ Widget build(BuildContext context) {
           future: getPlace(),
           builder: (BuildContext context, AsyncSnapshot snapshot){
             Map? killa = snapshot.data; // resultado de la funcion, requerido para el futurebuilder.
-
             int p = widget.p; // getter del valor p.
-
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.error != null) {
               return const Center(child: Text('an error occured!'));
             } else{
-              bool isfav = FavPageState().isFav(killa![p]['title']);
               if(killa == null) {
                 return Center(
                   child: CircularProgressIndicator(),
@@ -153,19 +151,9 @@ Widget build(BuildContext context) {
                               mainAxisAlignment: MainAxisAlignment.center,
 
                               children: <Widget>[
-                                TextButton.icon(     // <-- TextButton
-                                  onPressed: () {
-                                    // bolean de fuciones addFav y removeFav
-                                    isfav ?  FavPageState().removeFav(killa[p]['title']) : FavPageState().addFav(killa[p]['title']);
-                                    Navigator.of(context).push(MaterialPageRoute(
-                                                  builder: (context) => FavPage())).then((value) =>TabPage());
-                                                                     },
-                                  icon: Icon(
-                                    isfav ? Icons.favorite : Icons.favorite_border,
-                                    size: 24.0,
-                                  ),
-                                  label: Text(isfav ? "Favorito" : "Agregar a favoritos"),
-                                ),
+                                Container(
+                                    height: 40,
+                                    child:FavBottom(p:p,))
                               ],
                             ),
                             Align(
@@ -249,29 +237,55 @@ Widget build(BuildContext context) {
 
 }
 // otro boton flotante de ejemplo
-class Floatbottomfav extends StatelessWidget {
-  const Floatbottomfav({super.key});
+class FavBottom extends StatefulWidget {
+  final p;
+  const FavBottom({super.key, this.p});
 
+State < FavBottom> createState() =>  FavBottomState();
+
+}
+
+class FavBottomState extends State<FavBottom> {
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: Center(heightFactor: 2.5,
-        child: Ink(
-          decoration: const ShapeDecoration(
-            color: Colors.transparent,
-            shape: CircleBorder(),
-          ),
-          child: IconButton(
-            iconSize: 30,
-            icon: const Icon(Icons.favorite_border),
-            color: Colors.blueGrey,
-            focusColor: Colors.blue,
-            onPressed: () {
-            },
-          ),
-        ),
-      ),
-    );
+  return FutureBuilder<Map>(
+        future:_loadingPageState().getPlace(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            Map? killa = snapshot
+                .data; // resultado de la funcion, requerido para el futurebuilder.
+            int p = widget.p; // getter del valor p.
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            else if (snapshot.error != null) {
+              return const Center(child: Text('an error occured!'));
+            }
+            else {
+              bool isfav = FavPageState().isFav(killa![p]['title']);
+              if (killa == null) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return TextButton.icon( // <-- TextButton
+                  onPressed: () {
+                    // bolean de fuciones addFav y removeFav
+                    isfav
+                        ? FavPageState().removeFav(killa[p]['title'])
+                        : FavPageState().addFav(killa[p]['title']);
+                    setState(() {
+                      isfav = !isfav;
+                    });
+                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) =>TabPage(tab: 1,)));
+                  },
+                  icon: Icon(
+                    isfav ? Icons.favorite : Icons.favorite_border,
+                    size: 24.0,
+                  ),
+                  label: Text(isfav ? "Favorito" : "Agregar a favoritos"),
+                );
+              }
+            }
+        });
   }
 }
