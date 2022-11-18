@@ -147,6 +147,7 @@ class GridBuilderState extends State<GridBuilder> {
     final ListBox = GetStorage();
     List titles = ListBox.read('Titles');
     List img = ListBox.read('Urls');
+
     return GridView.builder(
         itemCount: titles.length,
         gridDelegate:
