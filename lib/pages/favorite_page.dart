@@ -2,11 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hive/hive.dart';
 import 'package:visit_me/pages/PlaceView.dart';
 import 'package:visit_me/pages/tab_page.dart';
 final ListBox = GetStorage();
-var box = Hive.box('myBox');
+
 
 class FavPage extends StatefulWidget {
   const FavPage({super.key});

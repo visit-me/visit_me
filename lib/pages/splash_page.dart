@@ -13,7 +13,6 @@ class SplashPage extends StatefulWidget {
 }
 
 class SplashPageState extends State<SplashPage> {
-
   List listTitles = [];
   List listUrl = [];
   Map titleUrls ={};
@@ -28,13 +27,14 @@ class SplashPageState extends State<SplashPage> {
   }
 
   Future<Map> getPlace() async { // funcion para carga la informacion de firestore
-
+    final ListBox = GetStorage();
     @override
     CollectionReference _collectionRef =
     FirebaseFirestore.instance.collection('place');
     QuerySnapshot querySnapshot = await _collectionRef.get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     Map ListPlace = allData.asMap(); // carga los doc almacenados en la ruta place de firestore
+    ListBox.write('MapPlace',ListPlace);
 
     for (int i = 0; i < ListPlace.length; i++) {
       listTitles.add(ListPlace[i]['title']);
@@ -45,11 +45,10 @@ class SplashPageState extends State<SplashPage> {
       titleUrls[ListPlace[i]['title']] = ListPlace[i]['url'];
     } // almacena el listado de lugares y las urls de la imagenes
 
-    final ListBox = GetStorage(); // gestor de almacenamiento local.
+     // gestor de almacenamiento local.
     ListBox.write('Titles', listTitles); //titulos de los lugares
     ListBox.write('Urls', listUrl);// urls de la imagenes
     ListBox.write('titleUrls',titleUrls);
-    ListBox.write('MapPlace', allData);
     ListBox.write('listLat', listLat);
     ListBox.write('listLong', listLong);
     ListBox.write('MapPlace', listadr);

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:hive/hive.dart';
 import 'package:visit_me/pages/Map_view.dart';
 import 'package:visit_me/pages/tab_page.dart';
 import 'Screensize_reducers.dart';
@@ -18,16 +17,25 @@ class loadingPage extends StatefulWidget {
 }
 
 class _loadingPageState extends State<loadingPage> {
-
+  late final String c1;
+  late final double  c2;
+  late final double  c3;
+  late final String c4;
   @override
-  CollectionReference _collectionRef =
-  FirebaseFirestore.instance.collection('place');
+  CollectionReference _collectionRef = FirebaseFirestore.instance.collection('place');
 
   Future<Map> getPlace() async {
     QuerySnapshot querySnapshot = await _collectionRef.get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    Map ListPl = allData.asMap();
-    return ListPl;
+    Map ListPlace = allData.asMap();
+
+    c1 = ListPlace[widget.p]['title'];
+    c2 = ListPlace[widget.p]['latitude'];
+    c3 = ListPlace[widget.p]['longitude'];
+    c4 = ListPlace[widget.p]['address'];
+
+    Map s =  ListPlace;
+    return s;
   }// carga los datos de firebase para  actualizar en la carga de page
 
   @override
@@ -38,6 +46,7 @@ class _loadingPageState extends State<loadingPage> {
 
 Widget build(BuildContext context) {
   var Ancho = screenWidth(context, dividedBy: 1); // clase que se encarga de obtener el ancho de la pantalla
+
 
    return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -50,7 +59,7 @@ Widget build(BuildContext context) {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){
-          Navigator.push(context, MaterialPageRoute( builder: (context) => MapView(p:widget.p,) ));
+          Navigator.push(context, MaterialPageRoute( builder: (context) => MapView(lat:c2 ,long: c3 ,adr:c4 , title: c1, ) ));
           }
         , label:Text('Mapa ') ,icon: Icon(Icons.map_outlined),
       ),
@@ -59,6 +68,7 @@ Widget build(BuildContext context) {
           future: getPlace(),
           builder: (BuildContext context, AsyncSnapshot snapshot){
             Map? killa = snapshot.data; // resultado de la funcion, requerido para el futurebuilder.
+            print(killa);
             int p = widget.p; // getter del valor p.
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -71,6 +81,7 @@ Widget build(BuildContext context) {
                 );
               } else{ // los validadores de la no nulilidad del los datos traidos de firebase
                 String k = killa[p]['title'];
+
                 return Stack(children:<Widget>[
                   Container(
                     height: 315.0,
@@ -241,20 +252,21 @@ State < FavBottom> createState() =>  FavBottomState();
 
 }
 
-var box = Hive.box('myBox');
+
 
 class FavBottomState extends State<FavBottom> {
 
   List fav = ["nada"];
 
   void initState(){
+    if(ListBox.read('FavList')!=null){
     List ListF = ListBox.read('FavList');
     for (int i = 0; i < ListF.length; i++) {
       if(fav.contains(ListF[i])==false)
       {fav.add(ListF[i]);
       }
     }
-    ListBox.write('FavList',fav);
+    ListBox.write('FavList',fav);}
     super.initState();
   }
 
@@ -290,7 +302,6 @@ class FavBottomState extends State<FavBottom> {
           isfav = !isfav;
         });
        print(ListBox.read('FavList'));
-       box.put('listFav', fav);
         //Navigator.of(context).push(MaterialPageRoute(builder: (context) =>TabPage(tab: 1,)));
       },
       icon: Icon(
