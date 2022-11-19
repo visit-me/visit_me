@@ -20,28 +20,43 @@ class MapView extends StatefulWidget {
 class MapViewState  extends State<MapView> {
 
   late GoogleMapController mapController;
+  final Set<Marker> markers = new Set();
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
 
+  Set<Marker> getmarkers() { //markers to place on map
+    setState(() {
+      markers.add(Marker( //add first marker
+        markerId: MarkerId(widget.title),
+        position:LatLng(widget.lat, widget.long), //position of marker
+        infoWindow: InfoWindow( //popup info
+          title: widget.title,
+          snippet: widget.adr,
+        ),
+        icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+      ));
+    });
+
+    return markers;
+  }
+
   @override
   Widget build(BuildContext context) {
-
-
-
-    final LatLng _center = LatLng(widget.lat,widget.long);
+    final LatLng _center = LatLng(widget.lat, widget.long);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            title: Text(widget.title, textScaleFactor: 1.2,style: TextStyle(color: Colors.black87),),
-            backgroundColor: Colors.white38,
-            surfaceTintColor: Colors.transparent,
-            elevation: 0,
-          ),
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          title: Text(widget.title, textScaleFactor: 1.2,
+            style: TextStyle(color: Colors.black87),),
+          backgroundColor: Colors.white38,
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+        ),
 
         body: GoogleMap(
           onMapCreated: _onMapCreated,
@@ -50,19 +65,16 @@ class MapViewState  extends State<MapView> {
             target: _center,
             zoom: 18.0,
           ),
+          markers: getmarkers(),
+
         ),
       ),
     );
   }
+
+
 }
 
-class BottomBarMap extends StatelessWidget {
-  BottomBarMap({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
 
-    );
-  }
-}
+
