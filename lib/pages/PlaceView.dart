@@ -29,24 +29,31 @@ class _loadingPageState extends State<loadingPage> {
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
     Map ListPlace = allData.asMap();
 
+    return ListPlace ;
+  }// carga los datos de firebase para  actualizar en la carga de page
+
+  Future<String> getMap() async {
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+    Map ListPlace = allData.asMap();
+
     c1 = ListPlace[widget.p]['title'];
     c2 = ListPlace[widget.p]['latitude'];
     c3 = ListPlace[widget.p]['longitude'];
     c4 = ListPlace[widget.p]['address'];
+  return 'XD';
+  }
 
-    Map s =  ListPlace;
-    return s;
-  }// carga los datos de firebase para  actualizar en la carga de page
 
   @override
   void initState() {
     getPlace();
+    getMap();
     super.initState();
   }
 
 Widget build(BuildContext context) {
   var Ancho = screenWidth(context, dividedBy: 1); // clase que se encarga de obtener el ancho de la pantalla
-
 
    return Scaffold(
       resizeToAvoidBottomInset: true,
