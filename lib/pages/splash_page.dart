@@ -17,7 +17,9 @@ class SplashPageState extends State<SplashPage> {
   List listTitles = [];
   List listUrl = [];
   Map titleUrls ={};
-
+  List listLat = [];
+  List listLong = [];
+  List listadr = [];
   //Inicializar la función _closeSplash
   void initState(){
     getPlace();
@@ -37,6 +39,9 @@ class SplashPageState extends State<SplashPage> {
     for (int i = 0; i < ListPlace.length; i++) {
       listTitles.add(ListPlace[i]['title']);
       listUrl.add(ListPlace[i]['url']);
+      listLat.add(ListPlace[i]['latitude']);
+      listLong.add(ListPlace[i]['longitude']);
+      listadr.add(ListPlace[i]['address']);
       titleUrls[ListPlace[i]['title']] = ListPlace[i]['url'];
     } // almacena el listado de lugares y las urls de la imagenes
 
@@ -45,6 +50,9 @@ class SplashPageState extends State<SplashPage> {
     ListBox.write('Urls', listUrl);// urls de la imagenes
     ListBox.write('titleUrls',titleUrls);
     ListBox.write('MapPlace', allData);
+    ListBox.write('listLat', listLat);
+    ListBox.write('listLong', listLong);
+    ListBox.write('MapPlace', listadr);
     return ListPlace;
   }
 

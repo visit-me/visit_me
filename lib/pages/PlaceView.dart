@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hive/hive.dart';
 import 'package:visit_me/pages/Map_view.dart';
 import 'package:visit_me/pages/tab_page.dart';
 import 'Screensize_reducers.dart';
@@ -49,12 +50,8 @@ Widget build(BuildContext context) {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MapView()),
-          );
-
-        }
+          Navigator.push(context, MaterialPageRoute( builder: (context) => MapView(p:widget.p,) ));
+          }
         , label:Text('Mapa ') ,icon: Icon(Icons.map_outlined),
       ),
       body:
@@ -244,6 +241,8 @@ State < FavBottom> createState() =>  FavBottomState();
 
 }
 
+var box = Hive.box('myBox');
+
 class FavBottomState extends State<FavBottom> {
 
   List fav = ["nada"];
@@ -290,6 +289,8 @@ class FavBottomState extends State<FavBottom> {
         setState(() {
           isfav = !isfav;
         });
+       print(ListBox.read('FavList'));
+       box.put('listFav', fav);
         //Navigator.of(context).push(MaterialPageRoute(builder: (context) =>TabPage(tab: 1,)));
       },
       icon: Icon(

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:visit_me/firebase_options.dart';
 import 'package:visit_me/pages/splash_page.dart';
 
@@ -12,6 +14,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform
   );
   await GetStorage.init();
+  await Hive.initFlutter();
+  await Hive.openBox('myBox');
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,

@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:hive/hive.dart';
 import 'package:visit_me/pages/PlaceView.dart';
 import 'package:visit_me/pages/tab_page.dart';
 final ListBox = GetStorage();
-
+var box = Hive.box('myBox');
 
 class FavPage extends StatefulWidget {
   const FavPage({super.key});
@@ -16,19 +17,10 @@ class FavPage extends StatefulWidget {
 
 class FavPageState  extends State<FavPage> {
   Map titleUrls = ListBox.read('titleUrls');
-  List fav = ['nada'];
+  List fav = [];
 
   void initState(){
     super.initState();
-  }
-
-  List<dynamic> getFav(List list){
-  List l =[];
-  for (int i = 1; i < list.length; i++) {
-  if(l.contains(list[i])==false && fav.contains(list[i])!="nada")
-  {l.add(list[i]);}
-  }
-  return l;
   }
 
   dynamic getFire() async {
@@ -61,8 +53,6 @@ class FavPageState  extends State<FavPage> {
     fav.contains(place) ? isbool = true : isbool = false;
     return isbool;
   }
-
-
 
   void _showAlertDialog(int index) {
     showDialog(
@@ -125,7 +115,7 @@ class FavPageState  extends State<FavPage> {
           // configura el app bar
      body: Stack(
               children: <Widget>[
-              (fav.length>0 && fav != 'nada') ? // comprueba que L es un array
+              (fav.length>0 && fav[0]!= 'nada') ? // comprueba que L es un array
                Center(
                     child:ListView.builder(
                         itemCount: fav.length, // determina el numero de elementos en el array L

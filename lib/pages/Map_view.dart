@@ -1,81 +1,101 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:visit_me/pages/PlaceView.dart';
-import 'package:visit_me/pages/tab_page.dart';
 import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'locations.dart' as locations;
 final ListBox = GetStorage();
-final ListPlace = ListBox.read('MapPlace');
+final ListPlace = ListBox.read('MapPlace').asMap();
+
+
 
 class MapView extends StatefulWidget {
-  const MapView({super.key});
+  final p;
+  const MapView({super.key, this.p});
 
   @override
   State <MapView> createState() => new MapViewState();
 }
 
+
+
 class MapViewState  extends State<MapView> {
 
+  late GoogleMapController mapController;
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
+
   @override
   Widget build(BuildContext context) {
-      return Scaffold(
-        appBar: AppBar(
-            title: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "VISIT-ME",
-                      )])),
-     body: MapSample(),
+    final lat = ListPlace[widget.p]['latitude'];
+    final lon = ListPlace[widget.p]['longitude'];
+    final adr = ListPlace[widget.p]['address'];
+
+    final LatLng _center = LatLng(lat, lon);
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            title: Text(ListPlace[widget.p]['title'], textScaleFactor: 1.2,style: TextStyle(color: Colors.black87),),
+            backgroundColor: Colors.white38,
+            surfaceTintColor: Colors.transparent,
+            elevation: 0,
+          ),
+
+        body: GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: _center,
+            zoom: 14.0,
+          ),
+        ),
+
+
+          floatingActionButton: FloatingActionButton.extended (
+            elevation: 4.0,
+            icon: const Icon(Icons.fmd_good),
+            label: const Text('ir'),
+            onPressed: () {},
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+          bottomNavigationBar: BottomAppBar(
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                IconButton(icon: Icon(Icons.arrow_back_ios_sharp), onPressed: () {Navigator.pop(context);},),
+                /*PopupMenuButton(
+                  icon: Icon(Icons.share),
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      value: 1,
+                      child: Text("Facebook"),
+                    ),
+                    PopupMenuItem(
+                      value: 2,
+                      child: Text("Instagram"),
+                    ),
+                  ],
+                ),
+                IconButton(icon: Icon(Icons.email), onPressed: () {},),*/
+
+              ],
+            ),
+          )
+      ),
     );
   }
 }
 
-class MapSample extends StatefulWidget {
-  @override
-  State<MapSample> createState() => MapSampleState();
-}
-
-class MapSampleState extends State<MapSample> {
-  Completer<GoogleMapController> _controller = Completer();
-
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
-
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
-
+class BottomBarMap extends StatelessWidget {
+  BottomBarMap({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _goToTheLake,
-        label: Text('To the lake!'),
-        icon: Icon(Icons.directions_boat),
-      ),
+    return Scaffold(
+
     );
   }
-
-
 }
