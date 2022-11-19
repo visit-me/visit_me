@@ -3,9 +3,9 @@ class User {
   var _name;
   var _email;
   var _password;
-
+  var _fav;
   //Constructor
-  User(this._uid, this._name, this._email, this._password);
+  User(this._uid, this._name, this._email, this._password,this._fav);
 
   //Constructor vacío
   User.Empty();
@@ -15,13 +15,15 @@ class User {
   : _uid = json['uid'],
     _name = json['name'],
     _email = json['email'],
-    _password = json['password'];
+    _password = json['password'],
+     _fav = json['fav'];
 
   Map<String, dynamic> toJson() => {
     'uid' : _uid,
     'name' : _name,
     'email' : _email,
-    'password' : _password
+    'password' : _password,
+    'fav' : _fav
   };
   
   //Getters &Setters
@@ -48,5 +50,13 @@ class User {
   set email(value) {
     _email = value;
   }
+
+  get fav => _fav;
+
+  set fav(value) {
+    _fav = value;
+  }
+
+
 }
 

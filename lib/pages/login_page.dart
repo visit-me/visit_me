@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:visit_me/pages/register_page.dart';
+import 'package:visit_me/pages/splash_page.dart';
 import 'package:visit_me/pages/tab_page.dart';
 import 'package:visit_me/repository/firebase_api.dart';
 

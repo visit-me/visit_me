@@ -1,15 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:visit_me/pages/favorite_page.dart';
-
+import 'package:visit_me/pages/Map_view.dart';
+import 'package:visit_me/pages/tab_page.dart';
 import 'Screensize_reducers.dart';
 final ListBox = GetStorage();
-List fav = ListBox.read('IsFav');
 
 class loadingPage extends StatefulWidget {
-
-  final int p; // p toma el valor del index o posicion de lista de lugares
+   final int p; // p toma el valor del index o posicion de lista de lugares
    final String url; // toma url de lista de lugares
    const loadingPage({super.key, required this.p, required this.url});
 
@@ -25,11 +23,10 @@ class _loadingPageState extends State<loadingPage> {
   FirebaseFirestore.instance.collection('place');
 
   Future<Map> getPlace() async {
-    /*QuerySnapshot querySnapshot = await _collectionRef.get();
+    QuerySnapshot querySnapshot = await _collectionRef.get();
     final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    Map ListPlace = allData.asMap();*/
-    Map ListPlace = ListBox.read('MapPlace');
-    return ListPlace;
+    Map ListPl = allData.asMap();
+    return ListPl;
   }// carga los datos de firebase para  actualizar en la carga de page
 
   @override
@@ -38,11 +35,11 @@ class _loadingPageState extends State<loadingPage> {
     super.initState();
   }
 
-
 Widget build(BuildContext context) {
   var Ancho = screenWidth(context, dividedBy: 1); // clase que se encarga de obtener el ancho de la pantalla
 
    return Scaffold(
+      resizeToAvoidBottomInset: true,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(""),
@@ -52,8 +49,10 @@ Widget build(BuildContext context) {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: (){
-
-          // <- aqui va el navigetor para ir a la pagina de mapa
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MapView()),
+          );
 
         }
         , label:Text('Mapa ') ,icon: Icon(Icons.map_outlined),
@@ -74,7 +73,7 @@ Widget build(BuildContext context) {
                   child: CircularProgressIndicator(),
                 );
               } else{ // los validadores de la no nulilidad del los datos traidos de firebase
-
+                String k = killa[p]['title'];
                 return Stack(children:<Widget>[
                   Container(
                     height: 315.0,
@@ -147,15 +146,16 @@ Widget build(BuildContext context) {
                                 ),
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                    top: 5.0,
+                                  ),
+                                child: FavBottom(f:k,)
+                                ),
+                              ),
 
-                              children: <Widget>[
-                                Container(
-                                    height: 40,
-                                    child:FavBottom(p:p,))
-                              ],
-                            ),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Container(
@@ -236,56 +236,67 @@ Widget build(BuildContext context) {
 
 
 }
-// otro boton flotante de ejemplo
 class FavBottom extends StatefulWidget {
-  final p;
-  const FavBottom({super.key, this.p});
+  final f;
+  const FavBottom({super.key, this.f});
 
 State < FavBottom> createState() =>  FavBottomState();
 
 }
 
 class FavBottomState extends State<FavBottom> {
+
+  List fav = ["nada"];
+
+  void initState(){
+    List ListF = ListBox.read('FavList');
+    for (int i = 0; i < ListF.length; i++) {
+      if(fav.contains(ListF[i])==false)
+      {fav.add(ListF[i]);
+      }
+    }
+    ListBox.write('FavList',fav);
+    super.initState();
+  }
+
+  dynamic isInFav(String place){
+    bool isbool;
+    fav.contains(place) ? isbool = true : isbool = false;
+    return isbool;
+  }// comprueba que el lugar exista en la lista de favoritos.
+
+  dynamic addFav(String place){
+    fav.add(place);
+    ListBox.write('FavList',fav);
+  }// agrega nuevo lugar a favoritos y lo almacena localmente
+
+  dynamic removeFav(String place){
+    fav.remove(place);
+    ListBox.write('FavList',fav);
+  }//remueve nuevo lugar a favoritos y lo elimina localmente
+
   @override
   Widget build(BuildContext context) {
-  return FutureBuilder<Map>(
-        future:_loadingPageState().getPlace(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            Map? killa = snapshot
-                .data; // resultado de la funcion, requerido para el futurebuilder.
-            int p = widget.p; // getter del valor p.
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            else if (snapshot.error != null) {
-              return const Center(child: Text('an error occured!'));
-            }
-            else {
-              bool isfav = FavPageState().isFav(killa![p]['title']);
-              if (killa == null) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                return TextButton.icon( // <-- TextButton
-                  onPressed: () {
-                    // bolean de fuciones addFav y removeFav
-                    isfav
-                        ? FavPageState().removeFav(killa[p]['title'])
-                        : FavPageState().addFav(killa[p]['title']);
-                    setState(() {
-                      isfav = !isfav;
-                    });
-                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) =>TabPage(tab: 1,)));
-                  },
-                  icon: Icon(
-                    isfav ? Icons.favorite : Icons.favorite_border,
-                    size: 24.0,
-                  ),
-                  label: Text(isfav ? "Favorito" : "Agregar a favoritos"),
-                );
-              }
-            }
+
+    String f = widget.f;
+    bool isfav = isInFav(f);
+
+    return TextButton.icon( // <-- TextButton
+      onPressed: () {
+        // bolean de fuciones addFav y removeFav
+        isfav
+            ? removeFav(f)
+            : addFav(f);
+        setState(() {
+          isfav = !isfav;
         });
-  }
+        //Navigator.of(context).push(MaterialPageRoute(builder: (context) =>TabPage(tab: 1,)));
+      },
+      icon: Icon(
+        isfav ? Icons.favorite : Icons.favorite_border,
+        size: 24.0,
+      ),
+      label: Text(isfav ? "Favorito" : "Agregar a favoritos"),
+    );
+      }
 }

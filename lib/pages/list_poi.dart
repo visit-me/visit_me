@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:visit_me/pages/PlaceView.dart';
+final ListBox = GetStorage();
+List titles = ListBox.read('Titles');
+List img = ListBox.read('Urls');
 
 class ListTileSelector extends StatefulWidget {
   const ListTileSelector({super.key});
@@ -10,6 +13,7 @@ class ListTileSelector extends StatefulWidget {
 }
 
 class ListTileSelectorState extends State<ListTileSelector> {
+  bool isLoading = true;
   bool shadowColor = false;
   bool isSelectionMode = false;
   final int listLength = 30;
@@ -35,12 +39,7 @@ class ListTileSelectorState extends State<ListTileSelector> {
 
   @override
   Widget build(BuildContext context) {
-
-    final ListBox = GetStorage();
-    List titles = ListBox.read('Titles');
-    List img = ListBox.read('Urls');
-
-    return Scaffold(
+ return Scaffold(
         appBar: AppBar(
           title: const
           Text("VISIT-ME"),
@@ -96,26 +95,28 @@ class ListTileSelectorState extends State<ListTileSelector> {
           ],
         ),
         body: _isGridMode
-            ? GridBuilder(
-          isSelectionMode: isSelectionMode,
-          selectedList: _selected,
-          onSelectionChange: (bool x) {
-            setState(() {
-              isSelectionMode = x;
-            });
-          },
-        )
-            : ListBuilder(
-          isSelectionMode: isSelectionMode,
-          selectedList: _selected,
-          onSelectionChange: (bool x) {
-            setState(() {
-              isSelectionMode = x;
-            });
-          },
-        ));
-  }
-}
+                        ? GridBuilder(
+                      isSelectionMode: isSelectionMode,
+                      selectedList: _selected,
+                      onSelectionChange: (bool x) {
+                        setState(() {
+                          isSelectionMode = x;
+                        });
+                      },
+                    )
+                        : ListBuilder(
+                      isSelectionMode: isSelectionMode,
+                      selectedList: _selected,
+                      onSelectionChange: (bool x) {
+                        setState(() {
+                          isSelectionMode = x;
+                        });
+                      },
+                    )
+
+              );
+              }
+            }
 
 class GridBuilder extends StatefulWidget {
   const GridBuilder({

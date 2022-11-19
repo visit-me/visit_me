@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:visit_me/pages/login_page.dart';
@@ -10,10 +9,10 @@ class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  State<SplashPage> createState() => SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class SplashPageState extends State<SplashPage> {
 
   List listTitles = [];
   List listUrl = [];
@@ -21,11 +20,10 @@ class _SplashPageState extends State<SplashPage> {
 
   //Inicializar la función _closeSplash
   void initState(){
-     getPlace();
+    getPlace();
     _closeSplash();
     super.initState();
   }
-
 
   Future<Map> getPlace() async { // funcion para carga la informacion de firestore
 
@@ -42,20 +40,11 @@ class _SplashPageState extends State<SplashPage> {
       titleUrls[ListPlace[i]['title']] = ListPlace[i]['url'];
     } // almacena el listado de lugares y las urls de la imagenes
 
-
-
-       final docRef = FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser?.uid);
-       DocumentSnapshot doc = await docRef.get();
-       final data = doc.data() as Map;
-       List ListFavFire = data['fav'];
-       print(ListFavFire);
-
     final ListBox = GetStorage(); // gestor de almacenamiento local.
     ListBox.write('Titles', listTitles); //titulos de los lugares
     ListBox.write('Urls', listUrl);// urls de la imagenes
     ListBox.write('titleUrls',titleUrls);
-    ListBox.write('Isfav', ListFavFire); // lugares favoritos
-    ListBox.write('MapPlace', ListPlace);
+    ListBox.write('MapPlace', allData);
     return ListPlace;
   }
 
