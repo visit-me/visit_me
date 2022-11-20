@@ -29,8 +29,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  google_maps_flutter: 2.2.1
+  shared_preferences: ^2.0.15
   firebase_core: ^2.1.0
-  shared_preferences: 2.0.15
   intl: ^0.17.0
   flutter:
     sdk: flutter
@@ -43,6 +44,11 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: ^4.0.2
   cloud_firestore: ^4.0.2
+  get: ^4.6.5
+  get_storage: 2.0.3
+
+  http: ^0.13.5
+  json_serializable: ^6.5.4
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +60,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  build_runner: ^2.3.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -62,8 +69,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
-
-
+    - assets/locations.json
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

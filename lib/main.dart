@@ -2,15 +2,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:visit_me/firebase_options.dart';
 import 'package:visit_me/pages/splash_page.dart';
+import 'package:visit_me/pages/tab_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
-
+  await GetStorage.init();
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
@@ -37,14 +39,25 @@ class MyApp extends StatelessWidget {
         Locale('es', 'CO'),
       ],
       theme: ThemeData(
-        primarySwatch: Colors.pink,
+        useMaterial3: true,
+        primarySwatch: Colors.teal,
+        navigationBarTheme: NavigationBarThemeData(
+          backgroundColor: Colors.teal.shade200,
+          indicatorColor: Colors.teal.shade500,
+        ),
+
       ),
 
       darkTheme: ThemeData(
-        primarySwatch: Colors.pink,
+        primarySwatch: Colors.blueGrey,
         brightness: Brightness.dark,
-              ),
-      home: const SplashPage(),
+      ),
+      initialRoute: '/',
+      routes: {'/': (_) => SplashPage(), '/1': (_) => TabPage(),'/2': (_) => TabPage(tab: 1,)},
+      //Remove the debug banner
+      debugShowCheckedModeBanner: false,
+
     );
   }
 }
+

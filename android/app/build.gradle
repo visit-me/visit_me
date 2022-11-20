@@ -47,7 +47,7 @@ android {
         applicationId "com.example.visit_me"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -59,9 +59,11 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
+
         }
     }
-}
+
+   }
 
 flutter {
     source '../..'
@@ -69,4 +71,8 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'com.google.code.gson:gson:2.9.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

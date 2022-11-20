@@ -15,6 +15,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final FirebaseApi _firebaseApi = FirebaseApi();
 
+  List fav = [];
   final _name = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -63,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
   void _onRegisterButtonClicked() {
     setState(() {
       if (_password.text == _repPassword.text) {
-        var user = User('', _name.text, _email.text, _password.text);
+        var user = User('', _name.text, _email.text, _password.text,fav);
         _registerUser(user);
       } else {
         _showMessage('Las contaseñas deben ser iguales');
