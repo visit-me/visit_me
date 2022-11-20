@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:visit_me/pages/PlaceView.dart';
 import 'package:visit_me/pages/favorite_page.dart';
 import 'package:visit_me/pages/login_page.dart';
 final ListBox = GetStorage();
@@ -23,8 +24,6 @@ class _LogCardState extends State<LogCard> {
     return data;
   }
 
-
-
    void sendout() async {
      FavPageState().setFire();
      ListBox.write('IsUserval', false);
@@ -34,9 +33,10 @@ class _LogCardState extends State<LogCard> {
   Widget build(BuildContext context) {
     _LogCardState().getCurrentUser();
    return Scaffold(
+       extendBodyBehindAppBar: true,
         appBar: AppBar(
             title: const Text("VISIT-ME"),
-            backgroundColor: Colors.white12,
+            backgroundColor: Colors.teal.shade50,
             elevation: 0,
             centerTitle:true
         ),
@@ -78,30 +78,52 @@ class _LogCardState extends State<LogCard> {
                     ), //CircleAvatar
                     ]),
                 Row(children: [Container(height: 50,)],),
-                ListTile(
-                  title: Text(Mainuser['name'], textAlign: TextAlign.center,),
-                  subtitle: Text(Mainuser['email'], textAlign: TextAlign.center,),
-                 //leading: CircleAvatar
-                    // (backgroundColor: Color(0xFFB2DFDB),child: Text(ico), radius: 30.0,),//trailing: Icon(Icons.favorite_border)
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Container(height: 20,
-                    child: Text("favoritos: $l", textAlign: TextAlign.center,),)],),
+                  children: [Container(height: 25,
+                    child: Text(Mainuser['name'], textAlign: TextAlign.center,textScaleFactor: 1.25,),)],),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Container(height:20,
+                    child: Text(Mainuser['email'], textAlign: TextAlign.center,textScaleFactor: .9,),)],),
                 // favirtos cargados en firebase al arrancar.
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    TextButton(
+                  children:[Container(
+                      height: 40,
+                      child:
+                       TextButton(
                       child: const Text('logout'),
                       onPressed: () {
                       _LogCardState().sendout();
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
 
                       }, // <- aquí va el llamado a la función logout
+                    )),
+                  ],
+                ),
+                Row(children: [Container(height: 50,)],),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Container(height: 25,
+                    child: Text("favoritos", textAlign: TextAlign.center,textScaleFactor: 1.25,),)],),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Container(height:20,
+                    child: Text("tus favoritos: $l", textAlign: TextAlign.center,textScaleFactor: .9,),)],),
+                // favirtos cargados en firebase al arrancar.
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    TextButton(
+                      child: const Text('restauar'),
+                      onPressed: () {
+                        FavBottomvState().getFire();
+                      }, // <- aquí va el llamado a la función logout
                     ),
                   ],
                 ),
+                Row(children: [Container(height: 150,)],),
               ],
             ),
           );

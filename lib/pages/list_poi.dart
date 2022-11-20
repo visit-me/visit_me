@@ -266,6 +266,9 @@ class _ListBuilderState extends State<ListBuilder> {
     final ListBox = GetStorage();
     List titles = ListBox.read('Titles');
     List img = ListBox.read('Urls');
+
+
+
     return ListView.builder(
         itemCount:titles.length,
         itemBuilder: (_, int index) {

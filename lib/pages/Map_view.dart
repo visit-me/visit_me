@@ -30,7 +30,7 @@ class MapViewState  extends State<MapView> {
     setState(() {
       markers.add(Marker( //add first marker
         markerId: MarkerId(widget.title),
-        position:LatLng(widget.lat, widget.long), //position of marker
+        position: LatLng(widget.lat, widget.long), //position of marker
         infoWindow: InfoWindow( //popup info
           title: widget.title,
           snippet: widget.adr,

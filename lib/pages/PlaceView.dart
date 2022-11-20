@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:visit_me/pages/Map_view.dart';
+import 'package:visit_me/pages/favorite_page.dart';
 import 'package:visit_me/pages/tab_page.dart';
 import 'Screensize_reducers.dart';
 final ListBox = GetStorage();
@@ -17,19 +21,30 @@ class loadingPage extends StatefulWidget {
 }
 
 class _loadingPageState extends State<loadingPage> {
+
+
   late final String c1;
-  late final double  c2;
-  late final double  c3;
+  late final double c2;
+  late final double c3;
   late final String c4;
   @override
   CollectionReference _collectionRef = FirebaseFirestore.instance.collection('place');
 
-  Future<Map> getPlace() async {
-    QuerySnapshot querySnapshot = await _collectionRef.get();
-    final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-    Map ListPlace = allData.asMap();
+  Future<Map>getPlace() async {
+    /*final prefs = await SharedPreferences.getInstance();
+    final List<String>? place = prefs.getStringList('places');
 
-    return ListPlace ;
+
+    if(place!= null && place.isNotEmpty ){
+      return place.asMap();
+     } else{*/
+      QuerySnapshot querySnapshot = await _collectionRef.get();
+      final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+      Map ListPlace = allData.asMap();
+      return ListPlace ;
+    //}
+
+
   }// carga los datos de firebase para  actualizar en la carga de page
 
   Future<String> getMap() async {
@@ -74,9 +89,10 @@ Widget build(BuildContext context) {
       FutureBuilder<Map>(
           future: getPlace(),
           builder: (BuildContext context, AsyncSnapshot snapshot){
-            Map? killa = snapshot.data; // resultado de la funcion, requerido para el futurebuilder.
-            print(killa);
-            int p = widget.p; // getter del valor p.
+            Map? killa = snapshot.data;
+                      // resultado de la funcion, requerido para el futurebuilder.
+            int p = widget.p;
+
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.error != null) {
@@ -167,7 +183,7 @@ Widget build(BuildContext context) {
                                 margin: const EdgeInsets.only(
                                     top: 5.0,
                                   ),
-                                child: FavBottom(f:k,)
+                                child: FavBottomv(f:k)
                                 ),
                               ),
 
@@ -195,7 +211,7 @@ Widget build(BuildContext context) {
                                     left: 20.0,
                                     right: 20.0
                                 ),
-                                child: Text('Departamento: '+killa[p]['department'],
+                                child: Text('Departamento: '+killa[p]['deparment'],
                                   style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w400,
@@ -251,20 +267,19 @@ Widget build(BuildContext context) {
 
 
 }
-class FavBottom extends StatefulWidget {
+class FavBottomv extends StatefulWidget {
   final f;
-  const FavBottom({super.key, this.f});
+  const FavBottomv({super.key, this.f});
 
-State < FavBottom> createState() =>  FavBottomState();
+State < FavBottomv> createState() =>  FavBottomvState();
 
 }
 
 
 
-class FavBottomState extends State<FavBottom> {
+class FavBottomvState extends State<FavBottomv> {
 
   List fav = ["nada"];
-
   void initState(){
     if(ListBox.read('FavList')!=null){
     List ListF = ListBox.read('FavList');
@@ -273,8 +288,28 @@ class FavBottomState extends State<FavBottom> {
       {fav.add(ListF[i]);
       }
     }
-    ListBox.write('FavList',fav);}
+    ListBox.write('FavList',fav);
+
+    }
     super.initState();
+  }
+
+  dynamic getFire() async {
+    final docRef = FirebaseFirestore.instance.collection("users").doc(
+        FirebaseAuth.instance.currentUser?.uid);
+    DocumentSnapshot doc = await docRef.get();
+    final data = doc.data() as Map;
+    List ListFavFire = data['fav'];
+
+    for (int i = 0; i < ListFavFire.length; i++) {
+      if(fav.contains(ListFavFire[i])==false)
+      {fav.add(ListFavFire[i]);
+      }
+    }
+
+    print(fav);
+    ListBox.write('FavList',fav);
+    savefav();
   }
 
   dynamic isInFav(String place){
@@ -284,18 +319,42 @@ class FavBottomState extends State<FavBottom> {
   }// comprueba que el lugar exista en la lista de favoritos.
 
   dynamic addFav(String place){
+    if (fav.contains(place) == false) {
     fav.add(place);
     ListBox.write('FavList',fav);
-  }// agrega nuevo lugar a favoritos y lo almacena localmente
+    savefav();}
+   }// agrega nuevo lugar a favoritos y lo almacena localmente
 
   dynamic removeFav(String place){
     fav.remove(place);
     ListBox.write('FavList',fav);
-  }//remueve nuevo lugar a favoritos y lo elimina localmente
+    savefav();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TabPage(tab: 1,),
+      ),
+          (route) => false,
+    );
+
+
+  }
+
+//( context, '/2');
+  //remueve nuevo lugar a favoritos y lo elimina localmente
+
+  void savefav() async{
+    List pagFav =[];
+    if(fav.contains("nada")==true)
+    {fav.remove("nada");pagFav.addAll(fav);}
+    else{ pagFav.addAll(fav);}
+    String l = pagFav.join(",");
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('pagFav', l);
+    }
 
   @override
   Widget build(BuildContext context) {
-
     String f = widget.f;
     bool isfav = isInFav(f);
 
@@ -308,7 +367,7 @@ class FavBottomState extends State<FavBottom> {
         setState(() {
           isfav = !isfav;
         });
-       print(ListBox.read('FavList'));
+
         //Navigator.of(context).push(MaterialPageRoute(builder: (context) =>TabPage(tab: 1,)));
       },
       icon: Icon(

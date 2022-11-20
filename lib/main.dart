@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:visit_me/firebase_options.dart';
 import 'package:visit_me/pages/splash_page.dart';
+import 'package:visit_me/pages/tab_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,11 +52,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blueGrey,
         brightness: Brightness.dark,
       ),
-
+      initialRoute: '/',
+      routes: {'/': (_) => SplashPage(), '/1': (_) => TabPage(),'/2': (_) => TabPage(tab: 1,)},
       //Remove the debug banner
       debugShowCheckedModeBanner: false,
 
-      home: const SplashPage(),
     );
   }
 }
